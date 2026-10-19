@@ -28,7 +28,7 @@ _TODO: signals → skill forecasts → scenario-weighted rankings → pathway, w
 
 | # | Feature | Where it lives | Status |
 |---|---|---|---|
-| 1 | Skills profile intake (CV / form / RIASEC quiz) | `/intake` | ⬜ |
+| 1 | Skills profile intake (CV / form / RIASEC quiz) | `/intake`, `lib/intake/`, `lib/riasec.ts` | ✅ |
 | 2 | AI-trend signal layer (updatable, source + date) | `/signals`, `POST /api/signals/refresh`, `lib/signals/` | ✅ |
 | 3 | Future-role matching (ranked, explainable, skills gap) | `/results`, `lib/scoring/` | ✅ (keyword matching) |
 | 4 | Personalised pathway (ordered, estimated time, free/low-cost) | `/pathway/[roleId]` | ⬜ |
@@ -57,6 +57,19 @@ _TODO: diagram._ Next.js (App Router) + TypeScript + Tailwind · Postgres + Driz
 - **Confidence** (low/medium/high, from signal count and agreement) sets a ± band on demand. Every score is labelled *Estimate, not a prediction*.
 - `/results` ranks emerging roles by default. Declining roles that match the person's current skills are shown separately, and a checkbox includes them in the ranking.
 - `npm test` runs the engine unit tests. `npm run results:check` prints each sample profile's ranking under both scenarios.
+
+### Profile intake (`/intake`)
+
+- **Three ways in:** upload a CV (PDF only, up to 5 MB, checked by size, MIME type and `%PDF-` signature), fill a short form, or start from a synthetic sample.
+- **CV extraction:** the PDF is held in memory, sent to Claude as a document block and then discarded. It is never written to disk or the database, and never logged. Claude returns JSON-schema output whose skill slugs are limited to an enum of our catalog. The output is zod-validated and retried once, and any slug not in the database is dropped. Without credentials, or if the call fails, a keyword matcher over the PDF text (`unpdf`) takes over and says so.
+- **Fairness and privacy:** the prompt forbids name, age, gender, ethnicity, religion, marital status, contact details and IDs. `lib/intake/sanitize.ts` also strips any sentence mentioning them from every text field before review and again before saving. Stored profiles keep only the confirmed skills and a note on how they were made, never the CV text.
+- **Human in the loop:** the user edits the skill list (add, remove, set level), and must tick a confirmation before continuing.
+- **RIASEC quiz (optional):** 18 questions in EN/BM (`lib/riasec.ts`), Likert 1–5. Interest fit = cosine similarity of the mean-centred 6-dimension profiles, shown with a hexagon and a plain-language reason. Roles' profiles come from O*NET (see below). The quiz is skippable and never hides roles.
+- Saved profiles get an unguessable link (`/results?profile=<random id>`). Uploads and saves are rate-limited per IP.
+
+### Data attribution
+
+Role interest profiles include information from the [O*NET 31.0 Database](https://www.onetcenter.org/database.html) by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under the [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license. We mapped each LaluanKu role to its closest O*NET occupation and rescaled the 1–7 interest scores to 0–1; the mapping is in `seed/roles.json` (`riasec_source`). O*NET® is a trademark of USDOL/ETA.
 
 ## Hardest risk + fallback
 
