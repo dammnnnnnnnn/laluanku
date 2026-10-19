@@ -4,7 +4,7 @@
 
 LaluanKu ("my path") is a living career forecast for Malaysians whose jobs are being reshaped by AI. It tracks dated trend signals, ranks future roles for a person's skills and interests with an explainable score, shows what changed when new signals arrive, and builds a free or low-cost learning pathway linked to the UN Sustainable Development Goals.
 
-- **Live demo:** _Replit URL to be added after deployment_ · **Health check:** `/api/health`
+- **Live demo:** https://laluanku--dammnnnnnnnn.replit.app · **Health check:** [`/api/health`](https://laluanku--dammnnnnnnnn.replit.app/api/health)
 - **Try it:** open `/results` for the sample persona Siti, or `/intake` to build your own profile. The site works in English and Bahasa Melayu.
 
 ---
@@ -193,7 +193,7 @@ flowchart LR
 
 | Tool | How we use it | Proof |
 |---|---|---|
-| **Replit** | Hosts the app (Autoscale deployment) and its Postgres database. `.replit` defines build (`npm ci && npm run build`) and run (`npm run db:deploy && npm run start:replit`). | Live URL: _to be added after deployment_ |
+| **Replit** | Hosts the app (Autoscale deployment) and its Postgres database. `.replit` defines build (`npm ci && npm run build`) and run (`npm run db:deploy && npm run start:replit`). | Live URL: https://laluanku--dammnnnnnnnn.replit.app |
 | **RunPod** | Serverless GPU endpoint serving `BAAI/bge-m3` embeddings for skill matching ([docs/runpod.md](docs/runpod.md)). | Endpoint ID, GPU type and runtime screenshot, plus `npm run embeddings:check` output: _to be added after the endpoint is deployed_ |
 | **GitHub** | Source, commit history (one commit per meaningful step), Apache License 2.0. | Repository made public and committee accounts added before submission |
 
