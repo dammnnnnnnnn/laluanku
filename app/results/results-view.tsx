@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { fmt, type Strings } from "@/lib/i18n";
 import { RIASEC_TYPES, TYPE_INFO, riasecCode, sharedTopTypes, type RiasecScores } from "@/lib/riasec";
+import { headlineChange } from "@/lib/scoring/diff";
 import { finalScore, type Weights } from "@/lib/scoring/engine";
-import type { ResultsData, RoleResult, SignalRef } from "@/lib/scoring/results";
+import type { ResultsData, RoleResult, ScenarioChanges, SignalRef } from "@/lib/scoring/results";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthYear = (iso: string) => `${MONTHS[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
@@ -145,6 +146,8 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
       </section>
 
       <Radar data={data} scenarioKey={scenarioKey} s={s} />
+
+      <WhatChanged data={data} changes={data.changes[scenarioKey] ?? null} s={s} />
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">{s.topRolesTitle}</h2>
@@ -459,5 +462,62 @@ function RiasecHexagon({ user, role }: { user: RiasecScores; role: RiasecScores 
         );
       })}
     </svg>
+  );
+}
+
+function WhatChanged({ data, changes, s }: { data: ResultsData; changes: ScenarioChanges | null; s: Strings }) {
+  if (!changes) {
+    return (
+      <section className="rounded-lg border border-dashed border-zinc-300 p-4 text-sm text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
+        <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">{s.changedTitle}</h2>
+        <p className="mt-1">{s.changedNone}</p>
+      </section>
+    );
+  }
+  const title = new Map(data.roles.map((r) => [r.id, r.title]));
+  const date = myt.format(new Date(changes.prevComputedAt));
+  const head = headlineChange(changes);
+  const headNew = head ? (changes.newSignalsByRole[head.roleId] ?? []).length : 0;
+  const headline = !head
+    ? s.changedNoMoves
+    : (head.prevRank ?? 99) > (head.currRank ?? 99)
+      ? fmt(headNew > 0 ? s.changedHeadlineUp : s.changedHeadlineUpNoNew, { rank: head.currRank ?? "–", title: title.get(head.roleId) ?? "", prev: head.prevRank ?? "–", n: headNew, date })
+      : fmt(s.changedHeadlineDown, { title: title.get(head.roleId) ?? "", prev: head.prevRank ?? "–", rank: head.currRank ?? "–", date });
+
+  return (
+    <section className="rounded-lg border border-sky-300 bg-sky-50 p-4 text-sm dark:border-sky-800 dark:bg-sky-950/40">
+      <h2 className="font-semibold">{s.changedTitle}</h2>
+      <p className="mt-1 font-medium">{headline}</p>
+      <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{fmt(s.changedSince, { date, n: changes.newSignalIds.length })}</p>
+      <ul className="mt-3 flex flex-col gap-2">
+        {changes.changes.map((c) => {
+          const up = (c.prevRank ?? 99) > (c.currRank ?? 99);
+          const same = c.prevRank === c.currRank;
+          const fresh = changes.newSignalsByRole[c.roleId] ?? [];
+          return (
+            <li key={c.roleId} className="flex flex-col gap-1">
+              <span className="flex flex-wrap items-baseline gap-x-2">
+                <span className={`w-4 ${same ? "text-zinc-400" : up ? "text-sky-700 dark:text-sky-400" : "text-rose-700 dark:text-rose-400"}`}>{same ? "=" : up ? "↑" : "↓"}</span>
+                <span className="font-medium">{title.get(c.roleId)}</span>
+                <span className="text-zinc-600 dark:text-zinc-400">
+                  {c.prevRank === null ? s.changedNewEntry : c.currRank === null ? s.changedLeft : `#${c.prevRank} → #${c.currRank}`}
+                </span>
+                {Math.abs(c.scoreDelta) >= 0.005 && (
+                  <span className="text-xs text-zinc-500">({fmt(s.changedPoints, { delta: `${c.scoreDelta > 0 ? "+" : ""}${pct(c.scoreDelta)}` })})</span>
+                )}
+              </span>
+              {fresh.length > 0 && (
+                <span className="flex flex-wrap gap-1 pl-6">
+                  {fresh.slice(0, 3).map((id) => (
+                    <SourceChip key={id} signal={data.signals[id]} />
+                  ))}
+                  {fresh.length > 3 && <span className="text-xs text-zinc-500">+{fresh.length - 3}</span>}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
