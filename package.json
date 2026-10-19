@@ -18,7 +18,9 @@
     "results:check": "tsx scripts/check-results.ts",
     "db:local": "tsx scripts/db-local.ts",
     "start:replit": "next start -H 0.0.0.0 -p ${PORT:-3000}",
-    "db:deploy": "node scripts/migrate.mjs && tsx scripts/seed.ts"
+    "db:deploy": "node scripts/migrate.mjs && tsx scripts/seed.ts",
+    "embeddings:check": "tsx scripts/embeddings-check.ts",
+    "embeddings:mock": "tsx scripts/mock-embeddings.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

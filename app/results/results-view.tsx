@@ -91,7 +91,7 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
           <Link href="/signals" className="underline">
             {s.navSignals}
           </Link>{" "}
-          · {s.resultsMatching}
+          · {data.similarityMethod === "embedding" ? fmt(s.resultsMatchingEmbedding, { model: data.similarityModel ?? "" }) : s.resultsMatching}
         </p>
       </section>
 

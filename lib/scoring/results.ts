@@ -29,6 +29,7 @@ export type ResultsData = {
   lastUpdated: string | null;
   signalsVersion: string;
   similarityMethod: SimilarityMethod;
+  similarityModel: string | null;
   profile: {
     id: number;
     sampleKey: string | null;
@@ -103,6 +104,7 @@ export async function loadResults(db: AnyDb, profileRef: string, asOf = new Date
     lastUpdated: ctx.lastUpdated ? ctx.lastUpdated.toISOString() : null,
     signalsVersion: ctx.signalsVersion,
     similarityMethod: ctx.similarity.method,
+    similarityModel: ctx.similarity.model,
     profile: {
       id: profile.id,
       sampleKey: profile.sampleKey,
