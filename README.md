@@ -56,12 +56,20 @@ _TODO_
 ## How to run
 
 ```bash
-cp .env.example .env.local   # fill in values
+cp .env.example .env.local   # fill in values (DATABASE_URL at minimum)
 npm install
+npm run db:migrate           # apply migrations in ./drizzle
+npm run db:seed              # load curated roles, skills, signals, scenarios, sample profiles
 npm run dev
 ```
 
-_TODO: database migration and seed commands._
+Other scripts:
+
+- `npm run db:check`: validates the seed files and runs migrations and the seed against an in-memory Postgres (PGlite). No database needed.
+- `npm run db:generate`: creates a new migration after editing `lib/db/schema.ts`.
+- `npm run db:studio`: browses the database.
+
+Seed data sources and editorial choices are documented in [seed/README.md](seed/README.md).
 
 ## Data and privacy
 

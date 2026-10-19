@@ -1,0 +1,30 @@
+{
+  "sample_key": "siti-admin-returner",
+  "raw_input": "SYNTHETIC SAMPLE PROFILE: fictional person, not a real CV.\n\nSiti (sample)\nAdministrative Assistant, returning to work after a career break\n\nExperience\n- Administrative Assistant, Contoh Logistik Sdn Bhd (fictional company), 2016-2022. Managed the operations manager's calendar and meetings; kept delivery and invoice records in Excel (VLOOKUP, pivot tables); keyed purchase orders into the company system; answered customer and driver calls in BM and English; drafted letters and memos; tracked office supplies.\n- Career break, 2022-2026: family caregiving.\n- Volunteer, residents' association, 2024-2026: kept the member list in Google Sheets, built sign-up forms with Google Forms, wrote WhatsApp announcements.\n\nEducation\n- Diploma in Office Management\n\nGoals\n- Return to stable work with flexible or hybrid hours, ideally in a role less likely to be automated.\n- About 8 hours a week to study; prefers free or HRD Corp-claimable courses.",
+  "extracted_json": {
+    "displayName": "Siti (sample)",
+    "headline": "Administrative assistant returning to work after a 4-year career break",
+    "summary": "Six years of office administration at a logistics company: scheduling, records, Excel reporting, data entry and customer calls. Recently ran a residents' association's member list and sign-ups with Google Sheets and Forms.",
+    "yearsExperience": 6,
+    "education": ["Diploma in Office Management"],
+    "languages": ["Bahasa Melayu", "English"],
+    "skills": [
+      { "slug": "office-administration", "level": 3, "evidence": "Six years supporting an operations manager" },
+      { "slug": "scheduling-coordination", "level": 3, "evidence": "Managed calendar and meetings" },
+      { "slug": "records-management", "level": 3, "evidence": "Kept delivery and invoice records" },
+      { "slug": "data-entry", "level": 3, "evidence": "Keyed purchase orders into the company system" },
+      { "slug": "attention-to-detail", "level": 3, "evidence": "Accurate invoice and delivery records" },
+      { "slug": "spreadsheets", "level": 2, "evidence": "Excel VLOOKUP and pivot tables; Google Sheets member list" },
+      { "slug": "customer-service", "level": 2, "evidence": "Answered customer and driver calls" },
+      { "slug": "business-writing", "level": 2, "evidence": "Drafted letters, memos and announcements" },
+      { "slug": "communication", "level": 2, "evidence": "Coordinated drivers, customers and residents" },
+      { "slug": "multilingual-communication", "level": 2, "evidence": "Works in BM and English" },
+      { "slug": "logistics-coordination", "level": 1, "evidence": "Worked alongside delivery operations" },
+      { "slug": "inventory-management", "level": 1, "evidence": "Tracked office supplies" },
+      { "slug": "no-code-tools", "level": 1, "evidence": "Built sign-up forms with Google Forms" }
+    ],
+    "goals": ["Stable work with flexible or hybrid hours", "A role less exposed to automation"],
+    "hoursPerWeek": 8,
+    "budget": "hrdc_claimable"
+  }
+}

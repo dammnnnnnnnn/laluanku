@@ -1,0 +1,25 @@
+{
+  "sample_key": "daniel-factory-technician",
+  "raw_input": "SYNTHETIC SAMPLE PROFILE: fictional person, not a real CV.\n\nDaniel (sample)\nProduction Technician, electrical and electronics manufacturing\n\nExperience\n- Production Technician, Contoh Elektronik Sdn Bhd (fictional E&E plant), 2018-2026. Troubleshoots and repairs assembly-line equipment; runs in-line quality checks; logs downtime and defects; follows lockout/tagout and safety procedures; trains new operators on the line.\n- Helped install sensors for a pilot machine-monitoring project, 2025.\n\nEducation\n- Sijil Kemahiran Malaysia (SKM) Level 3, Electrical\n\nGoals\n- Move into a growing technical field with better long-term prospects.\n- Shift work: about 6 hours a week to study; HRD Corp-claimable courses through employer preferred.",
+  "extracted_json": {
+    "displayName": "Daniel (sample)",
+    "headline": "E&E production technician with 8 years of shop-floor experience",
+    "summary": "Troubleshoots and repairs assembly-line equipment, runs quality checks, follows safety procedures and trains new operators. Helped install sensors for a machine-monitoring pilot.",
+    "yearsExperience": 8,
+    "education": ["Sijil Kemahiran Malaysia (SKM) Level 3, Electrical"],
+    "languages": ["Bahasa Melayu", "English"],
+    "skills": [
+      { "slug": "electronics-troubleshooting", "level": 3, "evidence": "Troubleshoots and repairs assembly-line equipment" },
+      { "slug": "electrical-systems", "level": 2, "evidence": "SKM Level 3 Electrical" },
+      { "slug": "quality-control", "level": 3, "evidence": "Runs in-line quality checks" },
+      { "slug": "workplace-safety", "level": 3, "evidence": "Follows lockout/tagout and safety procedures" },
+      { "slug": "attention-to-detail", "level": 3, "evidence": "Logs downtime and defects" },
+      { "slug": "problem-solving", "level": 2, "evidence": "Diagnoses equipment faults" },
+      { "slug": "teaching-mentoring", "level": 1, "evidence": "Trains new operators on the line" },
+      { "slug": "iot-systems", "level": 1, "evidence": "Helped install sensors for a machine-monitoring pilot" }
+    ],
+    "goals": ["Move into a growing technical field"],
+    "hoursPerWeek": 6,
+    "budget": "hrdc_claimable"
+  }
+}

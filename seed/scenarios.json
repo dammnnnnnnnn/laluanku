@@ -1,0 +1,16 @@
+[
+  {
+    "key": "moderate_2030",
+    "name": "Moderate AI disruption (to 2030)",
+    "description": "AI adoption continues at roughly the pace employers reported in the WEF Future of Jobs Survey 2024. Signals are used as they are.",
+    "ai_adoption_multiplier": 1.0,
+    "notes": "Baseline estimate, not a prediction. The multiplier is a modelling assumption chosen by the LaluanKu team. It leaves signal-based demand unchanged."
+  },
+  {
+    "key": "fast_ai_2030",
+    "name": "Fast AI disruption (to 2030)",
+    "description": "AI adoption speeds up, so demand shifts faster for roles whose tasks are most exposed to AI, in both directions: AI-heavy roles grow faster and routine clerical roles decline faster.",
+    "ai_adoption_multiplier": 1.5,
+    "notes": "Stress-test estimate, not a prediction. The multiplier is a modelling assumption chosen by the LaluanKu team. It is motivated by evidence of fast-rising task delegation to AI (Anthropic Economic Index, Sept 2025: directive use rose from 27% to 39% in under a year). It is applied in proportion to each role's ai_exposure level."
+  }
+]

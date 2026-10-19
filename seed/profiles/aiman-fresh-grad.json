@@ -1,0 +1,27 @@
+{
+  "sample_key": "aiman-fresh-grad",
+  "raw_input": "SYNTHETIC SAMPLE PROFILE: fictional person, not a real CV.\n\nAiman (sample)\nFresh graduate, Bachelor of Business Administration (Marketing)\n\nExperience\n- Marketing intern, Contoh Kreatif Sdn Bhd (fictional agency), 6 months, 2026. Wrote social media captions, scheduled posts, made simple graphics in Canva, compiled weekly engagement numbers in Google Sheets, and used ChatGPT and Claude to draft caption ideas.\n- Final-year project: survey of 120 students on online shopping habits, analysed in Excel.\n\nEducation\n- Bachelor of Business Administration (Marketing)\n\nLanguages: Bahasa Melayu, English, Mandarin (conversational)\n\nGoals\n- First full-time job in a growing field; open to digital or data roles.\n- About 15 hours a week to study; free courses preferred.",
+  "extracted_json": {
+    "displayName": "Aiman (sample)",
+    "headline": "Business (Marketing) fresh graduate with a social media internship",
+    "summary": "Six-month marketing internship: social media captions, post scheduling, Canva graphics and weekly engagement reports. Final-year survey analysis in Excel. Uses generative AI tools for drafting.",
+    "yearsExperience": 0,
+    "education": ["Bachelor of Business Administration (Marketing)"],
+    "languages": ["Bahasa Melayu", "English", "Mandarin"],
+    "skills": [
+      { "slug": "social-media-content", "level": 2, "evidence": "Wrote and scheduled social media posts during internship" },
+      { "slug": "digital-marketing", "level": 2, "evidence": "Marketing degree and agency internship" },
+      { "slug": "copywriting", "level": 2, "evidence": "Wrote captions" },
+      { "slug": "spreadsheets", "level": 2, "evidence": "Weekly engagement reports; survey analysis in Excel" },
+      { "slug": "generative-ai-use", "level": 2, "evidence": "Used ChatGPT and Claude to draft caption ideas" },
+      { "slug": "communication", "level": 2, "evidence": "Agency client work" },
+      { "slug": "creative-thinking", "level": 2, "evidence": "Campaign and caption ideas" },
+      { "slug": "multilingual-communication", "level": 2, "evidence": "BM, English, conversational Mandarin" },
+      { "slug": "data-analysis", "level": 1, "evidence": "Final-year survey of 120 students" },
+      { "slug": "graphic-design-tools", "level": 1, "evidence": "Simple graphics in Canva" }
+    ],
+    "goals": ["First full-time job in a growing field", "Open to digital or data roles"],
+    "hoursPerWeek": 15,
+    "budget": "free"
+  }
+}
