@@ -1,0 +1,17 @@
+# Replit config for LaluanKu (Next.js + Replit Postgres).
+# Secrets to add in the Replit Secrets tab: ANTHROPIC_API_KEY, AI_MODEL, ADMIN_TOKEN
+# (DATABASE_URL is set automatically when you create the Replit database).
+modules = ["nodejs-22", "postgresql-16"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+deploymentTarget = "autoscale"
+build = ["sh", "-c", "npm ci && npm run build"]
+run = ["sh", "-c", "npm run db:deploy && npm run start:replit"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80

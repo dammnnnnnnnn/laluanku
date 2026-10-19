@@ -50,13 +50,20 @@ _TODO: diagram._ Next.js (App Router) + TypeScript + Tailwind · Postgres + Driz
 
 ### Scoring (deterministic; constants in `lib/scoring/config.ts`)
 
-- **Signal contribution** = ±strength × 0.5^(age in days / 365). A signal counts in full when it names the role. When it names one of the role's required skills, it counts at 0.5 × importance / 3. Skill-level signals together add at most ±2 per role.
+- **Signal contribution** = ±strength × 0.5^(age in days / 365). A signal counts in full when it names the role. When it names one of the role's required skills, it counts at 0.5 × importance / 3. Skill-level signals together add at most ±2 per role, and feed-ingested signals that name a role add at most ±3, so a burst of similar news can't outweigh the curated reports.
 - **Role demand** = Σ contributions × scenario multiplier, where multiplier = 1 + (m − 1) × AI exposure weight (low 0, medium 0.5, high 1; m = 1.0 moderate, 1.5 fast AI). This is mapped to 0–100 with 50 + 50·tanh(raw / 5), so 50 means no net signal.
 - **Skill match** = importance-weighted share of the role's required skills that the person has. A related skill with keyword overlap ≥ 0.5 also counts, and the UI shows which one.
 - **Final** = 0.55 × skill match + 0.45 × demand until the RIASEC quiz exists (then 0.45 / 0.35 / 0.20). Users can change the weights with sliders.
 - **Confidence** (low/medium/high, from signal count and agreement) sets a ± band on demand. Every score is labelled *Estimate, not a prediction*.
 - `/results` ranks emerging roles by default. Declining roles that match the person's current skills are shown separately, and a checkbox includes them in the ranking.
 - `npm test` runs the engine unit tests. `npm run results:check` prints each sample profile's ranking under both scenarios.
+
+### Living forecast: "What changed"
+
+- The **signals version** is a hash of every signal's id, direction, strength, date and links, so it changes whenever a signal is added or re-tagged.
+- A **ranking snapshot** (`ranking_snapshots`) stores a profile's ranking for one scenario and one signals version, using default weights. One is recorded on a profile's first visit to `/results`. The refresh pipeline (`lib/refresh-pipeline.ts`) snapshots every sample profile and every profile created in the last 30 days before it pulls feeds (the baseline), and again after it accepts new signals.
+- `/results` diffs the current ranking against the latest snapshot taken on a different signals version. It shows a headline (for example: "Your #2 role, Vocational & Digital Skills Trainer, moved up from #6 because of 13 new signals since 20 Oct 2026"), each role's rank move and score change, and source chips for the new signals behind it.
+- **To demo:** open `/results` for a sample, click *Refresh signals* on `/signals` (admin token), then reload `/results`.
 
 ### Profile intake (`/intake`)
 
@@ -73,11 +80,17 @@ Role interest profiles include information from the [O*NET 31.0 Database](https:
 
 ## Hardest risk + fallback
 
-_TODO_
+| Risk | What we built |
+|---|---|
+| Unreliable or noisy trend data | 36 curated, dated, source-checked signals as the baseline. Feeds are capped (strength ≤ 3, ±3 per role), duplicates are dropped, and every checked item is logged with a reason. If every feed fails, existing signals stay and `/signals` shows the last good fetch. |
+| AI inventing jobs, courses or statistics | Roles, skills and courses come only from database tables. Claude's JSON output is schema-constrained and zod-validated, and unknown IDs are dropped. Summaries containing numbers that aren't in the source are replaced by the headline. |
+| Claude unavailable (no key, outage, refusal) | Keyword taggers for signals and CVs keep the app working, and the UI labels which method was used. Requests opt into server-side refusal fallback. |
+| Matching quality | The user confirms every extracted skill. Related-skill matching is keyword-based now, with RunPod embeddings planned (step 7) and keyword matching kept as the fallback. |
+| Demo database | `npm run db:local` runs Postgres in-process (PGlite), so the app works without installing Postgres. |
 
 ## AI disclosure
 
-- **LLM:** Claude (Anthropic API), model set by `AI_MODEL` (default `claude-opus-5-5`). Used for signal tagging now; CV extraction, pathway sequencing and explanations come later. It only selects from and explains our database records; it never invents jobs, courses or statistics. Requests opt into Anthropic's server-side refusal fallback (`fallbacks: "default"`). Each signal shows whether it was curated, tagged by Claude or tagged by the keyword fallback.
+- **LLM:** Claude (Anthropic API), model set by `AI_MODEL` (default `claude-opus-5-5`). Used for signal tagging and CV skill extraction; pathway sequencing and explanations come later. It only selects from and explains our database records; it never invents jobs, courses or statistics. Requests opt into Anthropic's server-side refusal fallback (`fallbacks: "default"`). Each signal shows whether it was curated, tagged by Claude or tagged by the keyword fallback.
 - **Embeddings:** multilingual embedding model (e.g. `BAAI/bge-m3`) on RunPod Serverless, with a keyword-matching fallback.
 
 ## Sponsor tools
@@ -87,13 +100,36 @@ _TODO_
 
 ## How to run
 
+### Locally, without installing Postgres
+
 ```bash
-cp .env.example .env.local   # fill in values (DATABASE_URL at minimum)
+npm install
+npm run db:local   # terminal 1: local Postgres (PGlite) in .pglite/, migrated + seeded; creates .env.local if missing
+npm run dev        # terminal 2
+```
+
+Add `ANTHROPIC_API_KEY` to `.env.local` to use Claude; without it, the keyword fallbacks are used. The local server handles one connection reliably, so keep `DATABASE_POOL_MAX=1` in `.env.local` while using it.
+
+### With your own Postgres
+
+```bash
+cp .env.example .env.local   # set DATABASE_URL, ADMIN_TOKEN, ANTHROPIC_API_KEY
 npm install
 npm run db:migrate           # apply migrations in ./drizzle
 npm run db:seed              # load curated roles, skills, signals, scenarios, sample profiles
 npm run dev
 ```
+
+### Deploy on Replit
+
+1. Import this GitHub repository into Replit from your own account.
+2. Create the built-in **PostgreSQL** database (Tools → Database). This sets `DATABASE_URL`.
+3. Add **Secrets**: `ANTHROPIC_API_KEY`, `AI_MODEL` (`claude-opus-5-5`) and `ADMIN_TOKEN` (a long random string).
+4. In the Shell run `npm ci`, then `npm run db:deploy` to migrate and seed. Press **Run** to try the dev server.
+5. Click **Deploy** and choose Autoscale. `.replit` already sets the build command (`npm ci && npm run build`) and the run command (`npm run db:deploy && npm run start:replit`), which migrates, re-seeds idempotently and serves on `0.0.0.0:$PORT`.
+6. Open `/api/health` on the live URL. It should report `"ok": true` with 30 roles. Then refresh signals once from `/signals`.
+
+`.replit` uses the `nodejs-22` and `postgresql-16` modules. If your Replit workspace offers different module names, pick the closest ones; what matters is the build and run commands.
 
 Other scripts:
 
@@ -101,7 +137,8 @@ Other scripts:
 - `npm run db:generate`: creates a new migration after editing `lib/db/schema.ts`.
 - `npm run db:studio`: browses the database.
 - `npm run signals:refresh`: runs a signal refresh against `DATABASE_URL`, the same as the admin button.
-- `npm run signals:check`: dry run of a refresh against an in-memory Postgres. It pulls the live feeds and prints what would be accepted or rejected, and why.
+- `npm run signals:check`: dry run of a refresh against an in-memory Postgres. It pulls the live feeds, prints what would be accepted or rejected and why, and shows how Siti's ranking would change.
+- `npm run db:deploy`: production migrate (`scripts/migrate.mjs`, no drizzle-kit needed) followed by the idempotent seed.
 
 Seed data sources and editorial choices are documented in [seed/README.md](seed/README.md).
 
