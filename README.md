@@ -31,8 +31,8 @@ _TODO: signals → skill forecasts → scenario-weighted rankings → pathway, w
 | 1 | Skills profile intake (CV / form / RIASEC quiz) | `/intake`, `lib/intake/`, `lib/riasec.ts` | ✅ |
 | 2 | AI-trend signal layer (updatable, source + date) | `/signals`, `POST /api/signals/refresh`, `lib/signals/` | ✅ |
 | 3 | Future-role matching (ranked, explainable, skills gap) | `/results`, `lib/scoring/` | ✅ (keyword matching) |
-| 4 | Personalised pathway (ordered, estimated time, free/low-cost) | `/pathway/[roleId]` | ⬜ |
-| 5 | SDG mapping (every role + skill, path contribution) | `/results`, `/pathway` | ⬜ |
+| 4 | Personalised pathway (ordered, estimated time, free/low-cost) | `/pathway/[roleId]`, `lib/pathway/`, `seed/courses.json` | ✅ |
+| 5 | SDG mapping (every role + skill, path contribution) | SDG chips on `/results`; "SDG contribution of this path" on `/pathway`; `lib/sdg.ts` | ✅ |
 | 6 | Handling uncertainty (moderate vs fast AI scenarios, labelled estimates) | `/results` scenario toggle, confidence bands | ✅ |
 
 ## Architecture
@@ -64,6 +64,15 @@ _TODO: diagram._ Next.js (App Router) + TypeScript + Tailwind · Postgres + Driz
 - A **ranking snapshot** (`ranking_snapshots`) stores a profile's ranking for one scenario and one signals version, using default weights. One is recorded on a profile's first visit to `/results`. The refresh pipeline (`lib/refresh-pipeline.ts`) snapshots every sample profile and every profile created in the last 30 days before it pulls feeds (the baseline), and again after it accepts new signals.
 - `/results` diffs the current ranking against the latest snapshot taken on a different signals version. It shows a headline (for example: "Your #2 role, Vocational & Digital Skills Trainer, moved up from #6 because of 13 new signals since 20 Oct 2026"), each role's rank move and score change, and source chips for the new signals behind it.
 - **To demo:** open `/results` for a sample, click *Refresh signals* on `/signals` (admin token), then reload `/results`.
+
+### Learning pathway (`/pathway/[roleId]?profile=…`)
+
+- **Courses come only from the curated catalog** (`seed/courses.json`, 46 courses). Each has a real URL, provider, cost (`free`, `low` or `hrdc_claimable`), hours and the date it was checked. Hours are the provider's stated time; where the provider gives none, our estimate is flagged with `*`.
+- **Selection** (`lib/pathway/engine.ts`): a greedy cover of the role's skills gap within the person's budget. It repeatedly picks the course that closes the most important remaining gaps per unit of time (importance / √hours), preferring free and then shorter courses. No course is picked only for a human skill such as problem solving; those are listed under *Build through practice*.
+- **Order:** the most important gap first, quick wins before long courses, and prerequisites first (for example, Kaggle's Python before Pandas).
+- **Schedule:** courses back to back at the person's hours per week, giving total hours, weeks and a week-by-week plan.
+- **Honest gaps:** skills with a course above the budget appear under *Possible if your budget allows*, and skills with no checked course under *Not in our catalog yet*. Each step lists up to two alternative courses so the person can choose.
+- **SDG contribution:** the path's link to targets 4.4 (skills built), 4.3 (affordable lifelong learning), 8.5 (moving toward rising demand), 8.2 (productivity through technology) and the role's own SDG targets, each with a reason specific to the path, plus the goals the skills on the path link to. Goal names and colours are in `lib/sdg.ts`; target descriptions are our paraphrases.
 
 ### Profile intake (`/intake`)
 
