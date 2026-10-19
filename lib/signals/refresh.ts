@@ -124,7 +124,8 @@ export async function refreshSignals(
     const duplicates: { item: FeedItem; of: string }[] = [];
     for (const item of candidates) {
       const tokens = titleTokens(item.title);
-      const match = known.find((k) => isNearDuplicate(tokens, k.tokens));
+      // Dataset releases are keyed by their release folder, and their titles differ only by date.
+      const match = item.sourceType === "dataset" ? undefined : known.find((k) => isNearDuplicate(tokens, k.tokens));
       if (match) {
         duplicates.push({ item, of: match.title });
       } else if (fresh.length < MAX_NEW_ITEMS_PER_RUN) {
@@ -218,7 +219,6 @@ export async function refreshSignals(
       .set({ finishedAt: new Date(), status, feeds: feedResults, checked: fresh.length + duplicates.length, accepted, rejected, failed })
       .where(eq(signalRefreshRuns.id, run.id));
 
-    // TODO(step 3/4): recompute rankings and store ranking snapshots once scoring exists.
 
     return { runId: run.id, status, tagger: tagger.name, model: tagger.model, feeds: feedResults, checked: fresh.length + duplicates.length, accepted, rejected, failed, newSignals };
   } catch (err) {

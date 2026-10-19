@@ -17,6 +17,12 @@ export const SKILL_SIGNAL_FACTOR = 0.5;
  */
 export const SKILL_PATH_CAP = 2;
 
+/**
+ * Feed-ingested signals that name a role directly add at most ±3 raw demand to it together,
+ * so a burst of similar news stories can't outweigh the curated reports.
+ */
+export const FEED_PATH_CAP = 3;
+
 /** How much of the scenario multiplier applies, by the role's AI exposure level. */
 export const EXPOSURE_WEIGHT = { low: 0, medium: 0.5, high: 1 } as const;
 

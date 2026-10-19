@@ -5,6 +5,7 @@ import {
   DEMAND_SQUASH_K,
   EXPOSURE_WEIGHT,
   RECENCY_HALF_LIFE_DAYS,
+  FEED_PATH_CAP,
   SKILL_PATH_CAP,
   SKILL_SIGNAL_FACTOR,
   SKILL_SIMILARITY_THRESHOLD,
@@ -19,6 +20,8 @@ export type EngineSignal = {
   strength: number;
   roleIds: number[];
   skillIds: number[];
+  /** True for signals ingested from feeds (not the curated seed). */
+  fromFeed?: boolean;
 };
 export type EngineScenario = { key: string; aiAdoptionMultiplier: number };
 export type ProfileSkill = { skillId: number; level: number };
@@ -32,6 +35,7 @@ export type Contribution = {
   decay: number;
   /** "direct" when the signal names the role, otherwise the skill id it came through. */
   via: "direct" | number;
+  fromFeed?: boolean;
 };
 
 export type RoleDemand = {
@@ -98,7 +102,7 @@ export function roleContributions(
     const sign = s.direction === "emerging" ? 1 : -1;
     const decay = recencyDecay(s.publishedDate, asOf);
     if (s.roleIds.includes(roleId)) {
-      out.push({ signalId: s.id, value: sign * s.strength * decay, decay, via: "direct" });
+      out.push({ signalId: s.id, value: sign * s.strength * decay, decay, via: "direct", fromFeed: s.fromFeed });
       continue;
     }
     let best: { skillId: number; importance: number } | null = null;
@@ -115,12 +119,17 @@ export function roleContributions(
       });
     }
   }
-  const skillPathTotal = out.filter((c) => c.via !== "direct").reduce((sum, c) => sum + Math.abs(c.value), 0);
-  if (skillPathTotal > SKILL_PATH_CAP) {
-    const scale = SKILL_PATH_CAP / skillPathTotal;
-    for (const c of out) if (c.via !== "direct") c.value *= scale;
-  }
+  capGroup(out.filter((c) => c.via !== "direct"), SKILL_PATH_CAP);
+  capGroup(out.filter((c) => c.via === "direct" && c.fromFeed), FEED_PATH_CAP);
   return out.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+}
+
+/** Scales a group of contributions down proportionally so their total magnitude is at most `cap`. */
+function capGroup(group: Contribution[], cap: number) {
+  const total = group.reduce((sum, c) => sum + Math.abs(c.value), 0);
+  if (total <= cap) return;
+  const scale = cap / total;
+  for (const c of group) c.value *= scale;
 }
 
 export function roleDemand(role: EngineRole, contributions: Contribution[], scenario: EngineScenario): RoleDemand {

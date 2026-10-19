@@ -70,6 +70,22 @@ describe("roleContributions and roleDemand", () => {
     close(c[0].value, c[9].value);
   });
 
+  it("caps feed signals that name the role at FEED_PATH_CAP, leaving curated ones untouched", () => {
+    const feed: EngineSignal[] = Array.from({ length: 6 }, (_, i) => ({
+      id: 300 + i,
+      publishedDate: "2026-10-20",
+      direction: "emerging" as const,
+      strength: 1,
+      roleIds: [1],
+      skillIds: [],
+      fromFeed: true,
+    }));
+    const curated: EngineSignal = { id: 400, publishedDate: "2026-10-20", direction: "emerging", strength: 5, roleIds: [1], skillIds: [] };
+    const c = roleContributions(1, roleSkills, [...feed, curated], asOf);
+    close(c.filter((x) => x.fromFeed).reduce((s, x) => s + x.value, 0), 3);
+    close(c.find((x) => x.signalId === 400)!.value, 5);
+  });
+
   it("amplifies declining demand too under fast AI for exposed roles", () => {
     const declining: EngineSignal[] = [{ id: 1, publishedDate: "2026-10-20", direction: "declining", strength: 4, roleIds: [1], skillIds: [] }];
     const c = roleContributions(1, roleSkills, declining, asOf);
