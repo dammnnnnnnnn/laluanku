@@ -11,10 +11,14 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "db:check": "tsx scripts/check-seed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "signals:refresh": "tsx scripts/refresh-signals.ts",
+    "signals:check": "tsx scripts/check-refresh.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
     "drizzle-orm": "^0.45.4",
+    "fast-xml-parser": "^5.11.2",
     "next": "16.4.2",
     "postgres": "^3.4.9",
     "react": "19.3.0",
