@@ -12,7 +12,10 @@ export default function Home() {
         {en.tagline} · {ms.tagline}
       </p>
       <div className="flex flex-wrap gap-3">
-        <Link href="/results" className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white">
+        <Link href="/intake" className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white">
+          {en.intakeTitle} · {ms.intakeTitle}
+        </Link>
+        <Link href="/results" className="rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700">
           {en.resultsTrySample} · {ms.resultsTrySample}
         </Link>
         <Link href="/signals" className="rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700">
