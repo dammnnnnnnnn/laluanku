@@ -79,6 +79,13 @@ _TODO: diagram._ Next.js (App Router) + TypeScript + Tailwind · Postgres + Driz
 - **Three ways in:** upload a CV (PDF only, up to 5 MB, checked by size, MIME type and `%PDF-` signature), fill a short form, or start from a synthetic sample.
 - **CV extraction:** the PDF is held in memory, sent to Claude as a document block and then discarded. It is never written to disk or the database, and never logged. Claude returns JSON-schema output whose skill slugs are limited to an enum of our catalog. The output is zod-validated and retried once, and any slug not in the database is dropped. Without credentials, or if the call fails, a keyword matcher over the PDF text (`unpdf`) takes over and says so.
 - **Fairness and privacy:** the prompt forbids name, age, gender, ethnicity, religion, marital status, contact details and IDs. `lib/intake/sanitize.ts` also strips any sentence mentioning them from every text field before review and again before saving. Stored profiles keep only the confirmed skills and a note on how they were made, never the CV text.
+- **Fairness test** (`lib/fairness.test.ts`, part of `npm test`): three synthetic CVs that differ only in name, gender, age, ethnicity, religion, marital status and contact details go through CV extraction, sanitising and scoring. They must produce identical skills, contain no protected attributes, and give identical rankings and scores under every scenario. A saved profile's display name and headline are also shown not to affect its ranking.
+
+### Language and accessibility
+
+- The **EN/BM switch** in the header stores the choice in a cookie; every page renders in the chosen language. `lib/i18n.ts` is typed so every English string must have a Bahasa Melayu version. Catalog data (role and skill names, role SDG reasons, target paraphrases) stays in English.
+- Pages are built mobile first and checked at 375 px with no horizontal scrolling. Form controls have labels, SDG chips keep readable contrast, and on phones they show the goal number with the name available to screen readers.
+- `/about` covers the models used (with live status), data sources, fairness, privacy, limitations, the O*NET attribution and "AI supports, humans decide".
 - **Human in the loop:** the user edits the skill list (add, remove, set level), and must tick a confirmation before continuing.
 - **RIASEC quiz (optional):** 18 questions in EN/BM (`lib/riasec.ts`), Likert 1–5. Interest fit = cosine similarity of the mean-centred 6-dimension profiles, shown with a hexagon and a plain-language reason. Roles' profiles come from O*NET (see below). The quiz is skippable and never hides roles.
 - Saved profiles get an unguessable link (`/results?profile=<random id>`). Uploads and saves are rate-limited per IP.
@@ -100,7 +107,7 @@ Role interest profiles include information from the [O*NET 31.0 Database](https:
 
 ## AI disclosure
 
-- **LLM:** Claude (Anthropic API), model set by `AI_MODEL` (default `claude-opus-5-5`). Used for signal tagging and CV skill extraction; pathway sequencing and explanations come later. It only selects from and explains our database records; it never invents jobs, courses or statistics. Requests opt into Anthropic's server-side refusal fallback (`fallbacks: "default"`). Each signal shows whether it was curated, tagged by Claude or tagged by the keyword fallback.
+- **LLM:** Claude (Anthropic API), model set by `AI_MODEL` (default `claude-opus-5-5`), also disclosed on `/about`. Used for signal tagging and CV skill extraction; pathway sequencing and explanations come later. It only selects from and explains our database records; it never invents jobs, courses or statistics. Requests opt into Anthropic's server-side refusal fallback (`fallbacks: "default"`). Each signal shows whether it was curated, tagged by Claude or tagged by the keyword fallback.
 - **Embeddings:** `BAAI/bge-m3` (multilingual: BM, EN, ZH) served by the Infinity embedding worker on RunPod Serverless, used only to compare skill names. Keyword matching is the fallback.
 
 ## Sponsor tools
