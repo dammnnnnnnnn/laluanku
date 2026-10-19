@@ -52,7 +52,7 @@ _TODO: diagram._ Next.js (App Router) + TypeScript + Tailwind · Postgres + Driz
 
 - **Signal contribution** = ±strength × 0.5^(age in days / 365). A signal counts in full when it names the role. When it names one of the role's required skills, it counts at 0.5 × importance / 3. Skill-level signals together add at most ±2 per role, and feed-ingested signals that name a role add at most ±3, so a burst of similar news can't outweigh the curated reports.
 - **Role demand** = Σ contributions × scenario multiplier, where multiplier = 1 + (m − 1) × AI exposure weight (low 0, medium 0.5, high 1; m = 1.0 moderate, 1.5 fast AI). This is mapped to 0–100 with 50 + 50·tanh(raw / 5), so 50 means no net signal.
-- **Skill match** = importance-weighted share of the role's required skills that the person has. A related skill with keyword overlap ≥ 0.5 also counts, and the UI shows which one.
+- **Skill match** = importance-weighted share of the role's required skills that the person has. A related skill also counts when its similarity reaches the threshold, and the UI shows which one. Similarity is the cosine similarity of `BAAI/bge-m3` embeddings from the RunPod endpoint (threshold 0.8, cached in `skill_embeddings`), or keyword overlap (threshold 0.5) when RunPod isn't configured, fails or times out (`lib/embeddings.ts`). `/results` states which method was used. See [docs/runpod.md](docs/runpod.md).
 - **Final** = 0.55 × skill match + 0.45 × demand until the RIASEC quiz exists (then 0.45 / 0.35 / 0.20). Users can change the weights with sliders.
 - **Confidence** (low/medium/high, from signal count and agreement) sets a ± band on demand. Every score is labelled *Estimate, not a prediction*.
 - `/results` ranks emerging roles by default. Declining roles that match the person's current skills are shown separately, and a checkbox includes them in the ranking.
@@ -94,18 +94,19 @@ Role interest profiles include information from the [O*NET 31.0 Database](https:
 | Unreliable or noisy trend data | 36 curated, dated, source-checked signals as the baseline. Feeds are capped (strength ≤ 3, ±3 per role), duplicates are dropped, and every checked item is logged with a reason. If every feed fails, existing signals stay and `/signals` shows the last good fetch. |
 | AI inventing jobs, courses or statistics | Roles, skills and courses come only from database tables. Claude's JSON output is schema-constrained and zod-validated, and unknown IDs are dropped. Summaries containing numbers that aren't in the source are replaced by the headline. |
 | Claude unavailable (no key, outage, refusal) | Keyword taggers for signals and CVs keep the app working, and the UI labels which method was used. Requests opt into server-side refusal fallback. |
-| Matching quality | The user confirms every extracted skill. Related-skill matching is keyword-based now, with RunPod embeddings planned (step 7) and keyword matching kept as the fallback. |
+| Matching quality | The user confirms every extracted skill. Related-skill matching uses multilingual embeddings from RunPod, with a tunable threshold (`npm run embeddings:check`). |
+| RunPod downtime or cold starts | Skill vectors are cached in the database, so normal requests don't call RunPod. If an embedding call fails or times out, matching falls back to keyword overlap and RunPod is skipped for 5 minutes. The page says which method was used. |
 | Demo database | `npm run db:local` runs Postgres in-process (PGlite), so the app works without installing Postgres. |
 
 ## AI disclosure
 
 - **LLM:** Claude (Anthropic API), model set by `AI_MODEL` (default `claude-opus-5-5`). Used for signal tagging and CV skill extraction; pathway sequencing and explanations come later. It only selects from and explains our database records; it never invents jobs, courses or statistics. Requests opt into Anthropic's server-side refusal fallback (`fallbacks: "default"`). Each signal shows whether it was curated, tagged by Claude or tagged by the keyword fallback.
-- **Embeddings:** multilingual embedding model (e.g. `BAAI/bge-m3`) on RunPod Serverless, with a keyword-matching fallback.
+- **Embeddings:** `BAAI/bge-m3` (multilingual: BM, EN, ZH) served by the Infinity embedding worker on RunPod Serverless, used only to compare skill names. Keyword matching is the fallback.
 
 ## Sponsor tools
 
 - **Replit:** live URL _TODO_
-- **RunPod:** endpoint ID / GPU type / runtime _TODO_
+- **RunPod:** Serverless embedding endpoint for skill matching (setup in [docs/runpod.md](docs/runpod.md)). Endpoint ID / GPU type / runtime screenshot: _TODO after deploying the endpoint_
 
 ## How to run
 
@@ -148,6 +149,8 @@ Other scripts:
 - `npm run signals:refresh`: runs a signal refresh against `DATABASE_URL`, the same as the admin button.
 - `npm run signals:check`: dry run of a refresh against an in-memory Postgres. It pulls the live feeds, prints what would be accepted or rejected and why, and shows how Siti's ranking would change.
 - `npm run db:deploy`: production migrate (`scripts/migrate.mjs`, no drizzle-kit needed) followed by the idempotent seed.
+- `npm run embeddings:check`: embeds and caches all skill names via RunPod, then prints the similarity distribution and closest pairs for tuning the threshold.
+- `npm run embeddings:mock`: a local stand-in for the RunPod endpoint (non-semantic vectors) for testing the code path without a GPU.
 
 Seed data sources and editorial choices are documented in [seed/README.md](seed/README.md).
 
