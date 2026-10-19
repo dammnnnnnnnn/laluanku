@@ -1,0 +1,71 @@
+// UN Sustainable Development Goals: names (EN/BM), official colours, and short plain-language
+// paraphrases (our wording) of the targets LaluanKu cites. Official text: https://sdgs.un.org/goals
+
+export type SdgGoal = { id: number; en: string; ms: string; color: string };
+
+export const SDG_GOALS: Record<number, SdgGoal> = {
+  1: { id: 1, en: "No Poverty", ms: "Tiada Kemiskinan", color: "#E5243B" },
+  2: { id: 2, en: "Zero Hunger", ms: "Kebuluran Sifar", color: "#DDA63A" },
+  3: { id: 3, en: "Good Health and Well-being", ms: "Kesihatan Baik dan Kesejahteraan", color: "#4C9F38" },
+  4: { id: 4, en: "Quality Education", ms: "Pendidikan Berkualiti", color: "#C5192D" },
+  5: { id: 5, en: "Gender Equality", ms: "Kesaksamaan Gender", color: "#FF3A21" },
+  6: { id: 6, en: "Clean Water and Sanitation", ms: "Air Bersih dan Sanitasi", color: "#26BDE2" },
+  7: { id: 7, en: "Affordable and Clean Energy", ms: "Tenaga Mampu Milik dan Bersih", color: "#FCC30B" },
+  8: { id: 8, en: "Decent Work and Economic Growth", ms: "Pekerjaan Wajar dan Pertumbuhan Ekonomi", color: "#A21942" },
+  9: { id: 9, en: "Industry, Innovation and Infrastructure", ms: "Industri, Inovasi dan Infrastruktur", color: "#FD6925" },
+  10: { id: 10, en: "Reduced Inequalities", ms: "Mengurangkan Ketidaksamaan", color: "#DD1367" },
+  11: { id: 11, en: "Sustainable Cities and Communities", ms: "Bandar dan Komuniti Mampan", color: "#FD9D24" },
+  12: { id: 12, en: "Responsible Consumption and Production", ms: "Penggunaan dan Pengeluaran Bertanggungjawab", color: "#BF8B2E" },
+  13: { id: 13, en: "Climate Action", ms: "Tindakan Iklim", color: "#3F7E44" },
+  14: { id: 14, en: "Life Below Water", ms: "Kehidupan di Bawah Air", color: "#0A97D9" },
+  15: { id: 15, en: "Life on Land", ms: "Kehidupan di Darat", color: "#56C02B" },
+  16: { id: 16, en: "Peace, Justice and Strong Institutions", ms: "Keamanan, Keadilan dan Institusi yang Kukuh", color: "#00689D" },
+  17: { id: 17, en: "Partnerships for the Goals", ms: "Perkongsian untuk Matlamat", color: "#19486A" },
+};
+
+/** Short paraphrases of the SDG targets referenced in our data (not the official wording). */
+export const SDG_TARGETS: Record<string, string> = {
+  "1.3": "Social protection systems that cover the poor and vulnerable",
+  "2.3": "Higher productivity and incomes for small-scale food producers",
+  "2.4": "Sustainable, resilient food production",
+  "3.3": "End epidemics and fight communicable diseases",
+  "3.4": "Prevent non-communicable diseases and promote mental health",
+  "3.8": "Universal health coverage and access to quality health services",
+  "3.c": "Grow and train the health workforce",
+  "3.d": "Stronger capacity for health risk reduction and emergencies",
+  "4.3": "Equal access to affordable technical, vocational and higher education",
+  "4.4": "More people with relevant skills for decent jobs",
+  "4.c": "More qualified teachers and trainers",
+  "5.5": "Women's full participation and equal leadership opportunities",
+  "6.3": "Better water quality and less pollution",
+  "7.2": "More renewable energy in the energy mix",
+  "7.3": "Faster improvement in energy efficiency",
+  "7.b": "Expanded, upgraded energy infrastructure",
+  "8.2": "Higher productivity through diversification, technology and innovation",
+  "8.3": "Support for decent job creation, entrepreneurship and small enterprises",
+  "8.5": "Full, productive employment and decent work for all",
+  "8.8": "Safe and secure working environments",
+  "8.10": "Wider access to banking and financial services",
+  "9.1": "Reliable, resilient infrastructure",
+  "9.2": "Inclusive, sustainable industrialisation",
+  "9.4": "Upgraded, cleaner and more efficient industry",
+  "9.5": "Stronger research and technological capability",
+  "9.c": "Wider access to information and communications technology",
+  "10.2": "Social and economic inclusion of all",
+  "10.3": "Equal opportunity and an end to discriminatory practices",
+  "11.2": "Safe, affordable, sustainable transport",
+  "11.6": "Lower environmental impact of cities",
+  "11.b": "Cities resilient to disasters and climate change",
+  "12.3": "Less food loss along production and supply chains",
+  "12.5": "Much less waste through prevention, reduction, recycling and reuse",
+  "12.6": "Companies adopting sustainable practices and reporting on them",
+  "12.7": "Sustainable public procurement",
+  "13.2": "Climate change measures built into policies and planning",
+  "15.1": "Conservation of land and freshwater ecosystems",
+  "16.6": "Effective, accountable and transparent institutions",
+  "16.10": "Public access to information and protection of fundamental freedoms",
+  "17.17": "Effective public, public-private and civil society partnerships",
+  "17.18": "Better availability of reliable data",
+};
+
+export const goalOfTarget = (target: string): number => Number(target.split(".")[0]);
