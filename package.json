@@ -13,7 +13,9 @@
     "db:check": "tsx scripts/check-seed.ts",
     "db:studio": "drizzle-kit studio",
     "signals:refresh": "tsx scripts/refresh-signals.ts",
-    "signals:check": "tsx scripts/check-refresh.ts"
+    "signals:check": "tsx scripts/check-refresh.ts",
+    "test": "tsx --test \"lib/**/*.test.ts\"",
+    "results:check": "tsx scripts/check-results.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
