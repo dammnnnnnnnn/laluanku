@@ -1,9 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { inArray, sql } from "drizzle-orm";
-import type { PgDatabase, PgQueryResultHKT } from "drizzle-orm/pg-core";
 import { z } from "zod";
-import * as schema from "./schema";
 import {
   AI_EXPOSURE_LEVELS,
   COURSE_COSTS,
@@ -17,11 +15,11 @@ import {
   signals,
   skills,
 } from "./schema";
+import type { AnyDb } from "./types";
 
 // Date the team last checked every curated source URL, date and figure in seed/signals.json.
 const SOURCES_VERIFIED_AT = new Date("2026-10-20T00:00:00+08:00");
 
-type AnyDb = PgDatabase<PgQueryResultHKT, typeof schema>;
 
 const slug = z.string().regex(/^[a-z0-9-]+$/);
 const sdgIds = z.array(z.number().int().min(1).max(17)).min(1, "every role and skill needs at least one SDG");

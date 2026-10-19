@@ -12,7 +12,8 @@ export function getDb(): Db {
   if (globalForDb.laluankuDb) return globalForDb.laluankuDb;
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL is not set");
-  const db = drizzle(postgres(url, { max: 5 }), { schema });
+  const max = Number(process.env.DATABASE_POOL_MAX) || 5;
+  const db = drizzle(postgres(url, { max }), { schema });
   globalForDb.laluankuDb = db;
   return db;
 }

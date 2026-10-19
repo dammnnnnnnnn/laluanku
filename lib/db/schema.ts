@@ -23,6 +23,10 @@ export const AI_EXPOSURE_LEVELS = ["low", "medium", "high"] as const;
 export const COURSE_COSTS = ["free", "low", "hrdc_claimable"] as const;
 export const SIGNAL_SOURCE_TYPES = ["report", "news", "dataset", "research"] as const;
 export const SIGNAL_DIRECTIONS = ["emerging", "declining"] as const;
+// curated = hand-checked seed; claude = tagged by the LLM; keyword = deterministic fallback tagger.
+export const SIGNAL_TAGGERS = ["curated", "claude", "keyword"] as const;
+export const FEED_ITEM_STATUSES = ["accepted", "rejected", "failed"] as const;
+export const REFRESH_RUN_STATUSES = ["running", "ok", "partial", "failed"] as const;
 
 const emptyIntArray = sql`'{}'::integer[]`;
 const emptyTextArray = sql`'{}'::text[]`;
@@ -104,12 +108,51 @@ export const signals = pgTable(
     strength: smallint("strength").notNull(),
     roleIds: integer("role_ids").array().notNull().default(emptyIntArray),
     skillIds: integer("skill_ids").array().notNull().default(emptyIntArray),
+    taggedBy: text("tagged_by", { enum: SIGNAL_TAGGERS }).notNull().default("curated"),
+    // Which configured feed produced the signal (null for curated seed signals).
+    feedKey: text("feed_key"),
   },
   (t) => [
     check("signals_strength_range", sql`${t.strength} between 1 and 5`),
     index("signals_published_date_idx").on(t.publishedDate),
   ],
 );
+
+// Every feed item the refresh has looked at, accepted or not, so items are tagged once
+// and the /signals page can show what was checked and why items were dropped.
+export const feedItems = pgTable(
+  "feed_items",
+  {
+    externalId: text("external_id").primaryKey(),
+    feedKey: text("feed_key").notNull(),
+    title: text("title").notNull(),
+    url: text("url").notNull(),
+    publishedDate: date("published_date", { mode: "string" }),
+    seenAt: timestamp("seen_at", { withTimezone: true }).notNull().defaultNow(),
+    status: text("status", { enum: FEED_ITEM_STATUSES }).notNull(),
+    reason: text("reason"),
+    signalId: integer("signal_id").references(() => signals.id, { onDelete: "set null" }),
+    runId: integer("run_id"),
+  },
+  (t) => [index("feed_items_seen_at_idx").on(t.seenAt)],
+);
+
+export type FeedRunResult = { key: string; name: string; ok: boolean; items: number; error?: string };
+
+export const signalRefreshRuns = pgTable("signal_refresh_runs", {
+  id: serial("id").primaryKey(),
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+  finishedAt: timestamp("finished_at", { withTimezone: true }),
+  status: text("status", { enum: REFRESH_RUN_STATUSES }).notNull().default("running"),
+  tagger: text("tagger", { enum: SIGNAL_TAGGERS }),
+  model: text("model"),
+  feeds: jsonb("feeds").$type<FeedRunResult[]>().notNull().default(sql`'[]'::jsonb`),
+  checked: integer("checked").notNull().default(0),
+  accepted: integer("accepted").notNull().default(0),
+  rejected: integer("rejected").notNull().default(0),
+  failed: integer("failed").notNull().default(0),
+  error: text("error"),
+});
 
 export const scenarios = pgTable("scenarios", {
   id: serial("id").primaryKey(),
