@@ -40,6 +40,22 @@ export const skills = pgTable("skills", {
   sdgReason: text("sdg_reason").notNull(),
 });
 
+// Cached skill-name embeddings from the RunPod endpoint, one row per skill and model.
+// text_hash detects renamed skills so they get re-embedded.
+export const skillEmbeddings = pgTable(
+  "skill_embeddings",
+  {
+    skillId: integer("skill_id")
+      .notNull()
+      .references(() => skills.id, { onDelete: "cascade" }),
+    model: text("model").notNull(),
+    textHash: text("text_hash").notNull(),
+    embedding: real("embedding").array().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.skillId, t.model] })],
+);
+
 export const roles = pgTable("roles", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),

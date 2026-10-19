@@ -29,8 +29,15 @@ export const EXPOSURE_WEIGHT = { low: 0, medium: 0.5, high: 1 } as const;
 /** raw demand → 0..1 via 0.5 + 0.5·tanh(raw / K); 0.5 means no net signal. */
 export const DEMAND_SQUASH_K = 5;
 
-/** Keyword similarity at or above this counts a related skill as covering a requirement. */
-export const SKILL_SIMILARITY_THRESHOLD = 0.5;
+/** Keyword-overlap similarity at or above this counts a related skill as covering a requirement. */
+export const KEYWORD_SIMILARITY_THRESHOLD = 0.5;
+
+/**
+ * Embedding cosine similarity at or above this counts as covering. Short skill names embed
+ * close together, so this is set high; tune it with npm run embeddings:check and the
+ * EMBEDDING_SIMILARITY_THRESHOLD env var.
+ */
+export const DEFAULT_EMBEDDING_SIMILARITY_THRESHOLD = 0.8;
 
 /** Default weights (CLAUDE.md). The interest weight applies only once the RIASEC quiz exists. */
 export const DEFAULT_WEIGHTS = {

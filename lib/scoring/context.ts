@@ -133,7 +133,7 @@ export async function loadScoringContext(db: AnyDb, asOf = new Date()): Promise<
     skills: skillRows,
     signals: signalRows,
     scenarios: scenarioRows,
-    similarity: await getSkillSimilarity(skillRows),
+    similarity: await getSkillSimilarity(skillRows, db),
     signalsVersion: computeSignalsVersion(signalRows),
     lastUpdated,
     contributions,

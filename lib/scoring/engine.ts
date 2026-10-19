@@ -8,7 +8,6 @@ import {
   FEED_PATH_CAP,
   SKILL_PATH_CAP,
   SKILL_SIGNAL_FACTOR,
-  SKILL_SIMILARITY_THRESHOLD,
 } from "./config";
 
 export type EngineRole = { id: number; aiExposure: keyof typeof EXPOSURE_WEIGHT };
@@ -173,7 +172,7 @@ export function skillMatch(
       let bestSim = 0;
       for (const p of profile) {
         const sim = similarity.between(p.skillId, req.skillId);
-        if (sim >= SKILL_SIMILARITY_THRESHOLD && sim > bestSim) {
+        if (sim >= similarity.threshold && sim > bestSim) {
           bestSim = sim;
           via = p.skillId;
         }
