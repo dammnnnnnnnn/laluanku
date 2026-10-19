@@ -15,7 +15,10 @@
     "signals:refresh": "tsx scripts/refresh-signals.ts",
     "signals:check": "tsx scripts/check-refresh.ts",
     "test": "tsx --test \"lib/**/*.test.ts\"",
-    "results:check": "tsx scripts/check-results.ts"
+    "results:check": "tsx scripts/check-results.ts",
+    "db:local": "tsx scripts/db-local.ts",
+    "start:replit": "next start -H 0.0.0.0 -p ${PORT:-3000}",
+    "db:deploy": "node scripts/migrate.mjs && tsx scripts/seed.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-socket": "0.2.13",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -41,5 +45,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { t, type Strings } from "@/lib/i18n";
 import { DEFAULT_SAMPLE, loadResults, type ResultsData } from "@/lib/scoring/results";
+import { DbError } from "../db-error";
 import { ResultsView } from "./results-view";
 
 export const metadata = { title: "Your future roles · LaluanKu" };
@@ -27,9 +28,7 @@ async function ResultsContent({ s, searchParams }: { s: Strings; searchParams: P
   try {
     data = await loadResults(getDb(), profileRef);
   } catch (err) {
-    const cause = err instanceof Error && err.cause instanceof Error ? ` (${err.cause.message})` : "";
-    console.error("results page:", err instanceof Error ? err.message.split("\n")[0] + cause : err);
-    return <p className="rounded-md bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">{s.signalsDbMissing}</p>;
+    return <DbError s={s} err={err} where="results page" />;
   }
   if (!data) return <p className="text-sm">{s.resultsNoProfile}</p>;
 

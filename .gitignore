@@ -52,3 +52,6 @@ Thumbs.db
 # misc
 *.pem
 .vercel
+
+# local PGlite database (npm run db:local)
+.pglite/

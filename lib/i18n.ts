@@ -102,6 +102,16 @@ export const strings = {
     weightsReset: "Reset",
     includeDeclining: "Also rank roles flagged as declining",
     topRolesTitle: "Top matched roles",
+    changedTitle: "What changed",
+    changedNone: "No earlier ranking to compare yet. When new signals arrive, changes to your ranking will show here.",
+    changedSince: "Compared with your ranking on {date}: {n} new signals since then (default weights).",
+    changedHeadlineUp: "Your #{rank} role, {title}, moved up from #{prev} because of {n} new signals since {date}.",
+    changedHeadlineUpNoNew: "Your #{rank} role, {title}, moved up from #{prev} since {date}.",
+    changedHeadlineDown: "{title} moved down from #{prev} to #{rank} since {date}.",
+    changedNoMoves: "Your top roles kept their places.",
+    changedNewEntry: "new in your top 5",
+    changedLeft: "left your top 5",
+    changedPoints: "{delta} pts",
     matchScore: "Match",
     formula: "Formula",
     skillsScore: "Skills",
@@ -158,7 +168,10 @@ export const strings = {
     taggedKeyword: "Keyword fallback",
     signalsStrengthNote:
       "Strength (1–5) is a team judgement of how direct and large the evidence is. Items from feeds are capped at 3, so a single news story never outweighs a major report.",
-    signalsDbMissing: "The database is not configured (DATABASE_URL), so signals can't be shown.",
+    dbNotConfigured:
+      "No database is configured (DATABASE_URL is not set). For local development, run npm run db:local in another terminal, then restart the dev server.",
+    dbUnavailable:
+      "Couldn't load data from the database. Check that it is running, and that npm run db:migrate and npm run db:seed have been run.",
     signalsLoading: "Loading signals…",
 
     refreshTitle: "Refresh signals (admin)",
@@ -275,6 +288,16 @@ export const strings = {
     weightsReset: "Set semula",
     includeDeclining: "Turut susun peranan yang ditanda menurun",
     topRolesTitle: "Peranan paling sepadan",
+    changedTitle: "Apa yang berubah",
+    changedNone: "Belum ada kedudukan terdahulu untuk dibandingkan. Apabila isyarat baharu tiba, perubahan kedudukan anda akan dipaparkan di sini.",
+    changedSince: "Berbanding kedudukan anda pada {date}: {n} isyarat baharu sejak itu (pemberat lalai).",
+    changedHeadlineUp: "Peranan #{rank} anda, {title}, naik dari #{prev} disebabkan {n} isyarat baharu sejak {date}.",
+    changedHeadlineUpNoNew: "Peranan #{rank} anda, {title}, naik dari #{prev} sejak {date}.",
+    changedHeadlineDown: "{title} turun dari #{prev} ke #{rank} sejak {date}.",
+    changedNoMoves: "Peranan teratas anda kekal di tempat yang sama.",
+    changedNewEntry: "baharu dalam 5 teratas",
+    changedLeft: "keluar dari 5 teratas",
+    changedPoints: "{delta} mata",
     matchScore: "Padanan",
     formula: "Formula",
     skillsScore: "Kemahiran",
@@ -331,7 +354,10 @@ export const strings = {
     taggedKeyword: "Sandaran kata kunci",
     signalsStrengthNote:
       "Kekuatan (1–5) ialah penilaian pasukan tentang sejauh mana bukti itu langsung dan besar. Item daripada suapan dihadkan kepada 3, jadi satu berita tidak mengatasi laporan utama.",
-    signalsDbMissing: "Pangkalan data belum dikonfigurasi (DATABASE_URL), jadi isyarat tidak dapat dipaparkan.",
+    dbNotConfigured:
+      "Tiada pangkalan data dikonfigurasi (DATABASE_URL tidak ditetapkan). Untuk pembangunan tempatan, jalankan npm run db:local di terminal lain, kemudian mulakan semula pelayan dev.",
+    dbUnavailable:
+      "Data tidak dapat dimuatkan daripada pangkalan data. Pastikan ia sedang berjalan, dan npm run db:migrate serta npm run db:seed telah dijalankan.",
     signalsLoading: "Memuatkan isyarat…",
 
     refreshTitle: "Kemas kini isyarat (pentadbir)",
