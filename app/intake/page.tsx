@@ -2,6 +2,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { t } from "@/lib/i18n";
+import { getStrings } from "@/lib/locale";
 import { getSampleDrafts, getSkillCatalog } from "@/lib/intake/catalog";
 import { DbError } from "../db-error";
 import { IntakeWizard } from "./intake-wizard";
@@ -21,13 +22,18 @@ export default function IntakePage() {
 
 async function IntakeContent() {
   await connection();
+  const { s, locale } = await getStrings();
   let data: { catalog: Awaited<ReturnType<typeof getSkillCatalog>>; samples: Awaited<ReturnType<typeof getSampleDrafts>> };
   try {
     const db = getDb();
     const [catalog, samples] = await Promise.all([getSkillCatalog(db), getSampleDrafts(db)]);
     data = { catalog, samples };
   } catch (err) {
-    return <DbError s={t("en")} err={err} where="intake page" />;
+    return <DbError s={s} err={err} where="intake page" />;
   }
-  return <IntakeWizard catalog={data.catalog} samples={data.samples} />;
+  return (
+    <div lang={locale}>
+      <IntakeWizard catalog={data.catalog} samples={data.samples} locale={locale} />
+    </div>
+  );
 }

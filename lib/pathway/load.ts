@@ -5,7 +5,12 @@ import { loadScoringContext, profileSkillsFor, scoreProfile, type RoleResult } f
 import { goalOfTarget } from "../sdg";
 import { buildPathway, weeklySchedule, type CatalogCourse, type Pathway } from "./engine";
 
-export type SdgContribution = { target: string; goal: number; reason: string };
+export type SdgContribution = {
+  target: string;
+  goal: number;
+  kind: "skills" | "affordable" | "demand" | "productivity" | "role";
+  values: Record<string, string | number>;
+};
 
 export type PathwayData = {
   profile: { ref: string; displayName: string; isSample: boolean; hoursPerWeek: number; budget: CatalogCourse["cost"] };
@@ -55,27 +60,32 @@ export async function loadPathway(db: AnyDb, roleSlug: string, profileRef: strin
   const builtSkills = pathway.steps.flatMap((s) => s.covers);
   const demand = role.demand[scenarioKey];
 
+  // Structured so the page can word each reason in the reader's language.
   const contributions: SdgContribution[] = [];
-  const add = (target: string, reason: string) => {
-    if (!contributions.some((c) => c.target === target)) contributions.push({ target, goal: goalOfTarget(target), reason });
+  const add = (c: Omit<SdgContribution, "goal">) => {
+    if (!contributions.some((x) => x.target === c.target)) contributions.push({ ...c, goal: goalOfTarget(c.target) });
   };
   if (builtSkills.length > 0) {
-    add("4.4", `Builds ${builtSkills.length} job-relevant skill${builtSkills.length > 1 ? "s" : ""}: ${builtSkills.map((id) => skillNames[id]).join(", ")}.`);
-    const affordable = pathway.steps.filter((s) => s.course.cost !== "low").length;
-    add(
-      "4.3",
-      `Lifelong learning you can afford: ${pathway.costCounts.free} of ${pathway.steps.length} course${pathway.steps.length > 1 ? "s are" : " is"} free` +
-        (pathway.costCounts.hrdc_claimable ? `, ${pathway.costCounts.hrdc_claimable} HRD Corp claimable` : "") +
-        (affordable < pathway.steps.length ? `, the rest low cost.` : "."),
-    );
+    add({ target: "4.4", kind: "skills", values: { n: builtSkills.length, skills: builtSkills.map((id) => skillNames[id]).join(", ") } });
+    add({
+      target: "4.3",
+      kind: "affordable",
+      values: {
+        free: pathway.costCounts.free,
+        total: pathway.steps.length,
+        hrdc: pathway.costCounts.hrdc_claimable,
+        low: pathway.costCounts.low,
+      },
+    });
   }
   if (role.outlook === "emerging" && demand && demand.normalized >= 0.5) {
-    add("8.5", `Moves you toward a role with rising demand (${Math.round(demand.normalized * 100)}/100 in the moderate scenario), supporting full and productive employment.`);
+    add({ target: "8.5", kind: "demand", values: { demand: Math.round(demand.normalized * 100) } });
   }
   if (role.aiExposure === "high" || builtSkills.some((id) => (skillById.get(id)?.sdgIds ?? []).includes(9))) {
-    add("8.2", "Builds digital and technical skills that raise productivity through technology and innovation.");
+    add({ target: "8.2", kind: "productivity", values: {} });
   }
-  for (const target of role.sdgTargets) add(target, role.sdgReason);
+  // The role's own SDG reason is curated data (English).
+  for (const target of role.sdgTargets) add({ target, kind: "role", values: { reason: role.sdgReason } });
 
   const byGoal = new Map<number, string[]>();
   for (const id of builtSkills) {

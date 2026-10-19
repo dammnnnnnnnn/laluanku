@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { t, type Strings } from "@/lib/i18n";
+import { getStrings } from "@/lib/locale";
 import { getSignalsPageData, type SignalsPageData } from "@/lib/signals/queries";
 import { DbError } from "../db-error";
 import { RefreshPanel } from "./refresh-panel";
@@ -20,20 +21,22 @@ export default function SignalsPage({ searchParams }: PageProps<"/signals">) {
   const s = t("en");
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-10 sm:px-6">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">{s.signalsTitle}</h1>
-        <p className="text-zinc-600 dark:text-zinc-400">{s.signalsIntro}</p>
-      </header>
       <Suspense fallback={<p className="text-sm text-zinc-500">{s.signalsLoading}</p>}>
-        <SignalsContent s={s} searchParams={searchParams} />
+        <SignalsContent searchParams={searchParams} />
       </Suspense>
-      <RefreshPanel s={s} />
     </main>
   );
 }
 
-async function SignalsContent({ s, searchParams }: { s: Strings; searchParams: PageProps<"/signals">["searchParams"] }) {
+async function SignalsContent({ searchParams }: { searchParams: PageProps<"/signals">["searchParams"] }) {
   await connection();
+  const { s, locale } = await getStrings();
+  const header = (
+    <header className="flex flex-col gap-2">
+      <h1 className="text-3xl font-semibold tracking-tight">{s.signalsTitle}</h1>
+      <p className="text-zinc-600 dark:text-zinc-400">{s.signalsIntro}</p>
+    </header>
+  );
   const params = await searchParams;
   const direction: Direction = params.direction === "emerging" || params.direction === "declining" ? params.direction : "all";
 
@@ -41,14 +44,21 @@ async function SignalsContent({ s, searchParams }: { s: Strings; searchParams: P
   try {
     data = await getSignalsPageData(getDb());
   } catch (err) {
-    return <DbError s={s} err={err} where="signals page" />;
+    return (
+      <div lang={locale} className="flex flex-col gap-6">
+        {header}
+        <DbError s={s} err={err} where="signals page" />
+        <RefreshPanel s={s} />
+      </div>
+    );
   }
 
   const shown = direction === "all" ? data.signals : data.signals.filter((x) => x.direction === direction);
   const latestRun = data.runs[0];
 
   return (
-    <>
+    <div lang={locale} className="flex flex-col gap-6">
+      {header}
       <StatusBar s={s} data={data} />
       <nav className="flex flex-wrap items-center gap-2 text-sm" aria-label="Filter signals">
         {(["all", "emerging", "declining"] as const).map((d) => (
@@ -93,7 +103,8 @@ async function SignalsContent({ s, searchParams }: { s: Strings; searchParams: P
           {latestRun?.status === "failed" && <p className="mt-2 text-amber-700 dark:text-amber-400">{s.signalsRefreshFailed}</p>}
         </section>
       )}
-    </>
+      <RefreshPanel s={s} />
+    </div>
   );
 }
 

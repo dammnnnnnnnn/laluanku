@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { SdgChip } from "../sdg-chip";
 import { useMemo, useState } from "react";
-import { fmt, type Strings } from "@/lib/i18n";
+import { fmt, type Locale, type Strings } from "@/lib/i18n";
 import { RIASEC_TYPES, TYPE_INFO, riasecCode, sharedTopTypes, type RiasecScores } from "@/lib/riasec";
 import { headlineChange } from "@/lib/scoring/diff";
 import { finalScore, type Weights } from "@/lib/scoring/engine";
@@ -21,7 +21,7 @@ const shortSource = (name: string) => {
 
 type Ranked = { role: RoleResult; score: number; band: number };
 
-export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
+export function ResultsView({ data, s, locale }: { data: ResultsData; s: Strings; locale: Locale }) {
   const [scenarioKey, setScenarioKey] = useState(data.scenarios[0]?.key ?? "");
   const [weights, setWeights] = useState<Weights>(data.defaultWeights);
   const [includeDeclining, setIncludeDeclining] = useState(false);
@@ -153,7 +153,7 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">{s.topRolesTitle}</h2>
         {ranked.slice(0, 3).map((r, i) => (
-          <RoleCard key={r.role.id} rank={i + 1} ranked={r} data={data} scenarioKey={scenarioKey} weights={normalized} s={s} />
+          <RoleCard key={r.role.id} rank={i + 1} ranked={r} data={data} scenarioKey={scenarioKey} weights={normalized} s={s} locale={locale} />
         ))}
         {ranked.length > 3 && (
           <ol start={4} className="flex flex-col gap-1 rounded-lg border border-zinc-200 p-4 text-sm dark:border-zinc-800">
@@ -191,7 +191,7 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
 function WeightSlider({ label, value, share, onChange }: { label: string; value: number; share: number; onChange: (v: number) => void }) {
   return (
     <label className="mt-2 flex items-center gap-3 text-sm">
-      <span className="w-36 shrink-0">{label}</span>
+      <span className="w-28 shrink-0 sm:w-36">{label}</span>
       <input type="range" aria-label={label} min={0} max={1} step={0.05} value={value} onChange={(e) => onChange(Number(e.target.value))} className="flex-1 accent-emerald-700" />
       <span className="w-10 text-right tabular-nums">{pct(share)}%</span>
     </label>
@@ -284,6 +284,7 @@ function RoleCard({
   scenarioKey,
   weights,
   s,
+  locale,
 }: {
   rank: number;
   ranked: Ranked;
@@ -291,6 +292,7 @@ function RoleCard({
   scenarioKey: string;
   weights: { skill: number; demand: number; interest: number };
   s: Strings;
+  locale: Locale;
 }) {
   const { role, score, band } = ranked;
   const d = role.demand[scenarioKey];
@@ -312,7 +314,7 @@ function RoleCard({
           <p className="text-sm text-zinc-500">{role.sector}</p>
           <p className="mt-1 flex flex-wrap gap-1">
             {role.sdgIds.map((g) => (
-              <SdgChip key={g} goal={g} title={`${role.sdgTargets.filter((tg) => tg.startsWith(`${g}.`)).join(", ")} · ${role.sdgReason}`} />
+              <SdgChip key={g} goal={g} locale={locale} title={`${role.sdgTargets.filter((tg) => tg.startsWith(`${g}.`)).join(", ")} · ${role.sdgReason}`} />
             ))}
           </p>
         </div>
@@ -348,7 +350,7 @@ function RoleCard({
           </p>
         )}
       </div>
-      <p className="mt-2 rounded bg-zinc-100 px-2 py-1 font-mono text-xs dark:bg-zinc-900">
+      <p className="mt-2 rounded bg-zinc-100 px-2 py-1 font-mono text-xs break-words dark:bg-zinc-900">
         {s.formula}: {weights.skill.toFixed(2)} × {pct(role.skill.score)} + {weights.demand.toFixed(2)} × {pct(d.normalized)}
         {role.interest !== null && ` + ${weights.interest.toFixed(2)} × ${pct(role.interest)}`} = {pct(score)}
       </p>
@@ -386,7 +388,7 @@ function RoleCard({
         <p className="mt-1 text-xs text-zinc-500">{role.sdgReason}</p>
       </div>
 
-      {data.profile.riasec && role.riasec && <InterestCompare s={s} user={data.profile.riasec} role={role.riasec} source={role.riasecSource} />}
+      {data.profile.riasec && role.riasec && <InterestCompare s={s} locale={locale} user={data.profile.riasec} role={role.riasec} source={role.riasecSource} />}
 
       <Link
         href={`/pathway/${role.slug}?profile=${encodeURIComponent(data.profile.ref)}`}
@@ -427,9 +429,9 @@ function RoleCard({
   );
 }
 
-function InterestCompare({ s, user, role, source }: { s: Strings; user: RiasecScores; role: RiasecScores; source: string | null }) {
+function InterestCompare({ s, locale, user, role, source }: { s: Strings; locale: Locale; user: RiasecScores; role: RiasecScores; source: string | null }) {
   const shared = sharedTopTypes(user, role);
-  const names = (types: string[]) => types.map((t) => TYPE_INFO[t as keyof typeof TYPE_INFO].en).join(" & ");
+  const names = (types: string[]) => types.map((t) => TYPE_INFO[t as keyof typeof TYPE_INFO][locale]).join(" & ");
   return (
     <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
       <RiasecHexagon user={user} role={role} />

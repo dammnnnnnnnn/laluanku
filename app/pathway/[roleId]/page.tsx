@@ -2,9 +2,10 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { getDb } from "@/lib/db";
-import { fmt, t, type Strings } from "@/lib/i18n";
+import { fmt, t, type Locale, type Strings } from "@/lib/i18n";
+import { getStrings } from "@/lib/locale";
 import type { Cost } from "@/lib/pathway/engine";
-import { loadPathway, type PathwayData } from "@/lib/pathway/load";
+import { loadPathway, type PathwayData, type SdgContribution } from "@/lib/pathway/load";
 import { DEFAULT_SAMPLE } from "@/lib/scoring/results";
 import { SDG_GOALS, SDG_TARGETS } from "@/lib/sdg";
 import { DbError } from "../../db-error";
@@ -25,22 +26,21 @@ export default function PathwayPage({ params, searchParams }: PageProps<"/pathwa
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-10 sm:px-6">
       <Suspense fallback={<p className="text-sm text-zinc-500">{s.resultsLoading}</p>}>
-        <PathwayContent s={s} params={params} searchParams={searchParams} />
+        <PathwayContent params={params} searchParams={searchParams} />
       </Suspense>
     </main>
   );
 }
 
 async function PathwayContent({
-  s,
   params,
   searchParams,
 }: {
-  s: Strings;
   params: PageProps<"/pathway/[roleId]">["params"];
   searchParams: PageProps<"/pathway/[roleId]">["searchParams"];
 }) {
   await connection();
+  const { s, locale } = await getStrings();
   const { roleId } = await params;
   const query = await searchParams;
   const profileRef = typeof query.profile === "string" && query.profile ? query.profile : DEFAULT_SAMPLE;
@@ -52,10 +52,35 @@ async function PathwayContent({
     return <DbError s={s} err={err} where="pathway page" />;
   }
   if (!data) return <p className="text-sm">{s.resultsNoProfile}</p>;
-  return <PathwayView s={s} data={data} />;
+  return (
+    <div lang={locale} className="flex flex-col gap-6">
+      <PathwayView s={s} locale={locale} data={data} />
+    </div>
+  );
 }
 
-function PathwayView({ s, data }: { s: Strings; data: PathwayData }) {
+function reasonText(s: Strings, c: SdgContribution): string {
+  const v = c.values;
+  switch (c.kind) {
+    case "skills":
+      return fmt(s.sdgReason44, { n: v.n, skills: v.skills });
+    case "affordable":
+      return fmt(s.sdgReason43, {
+        free: v.free,
+        total: v.total,
+        hrdc: Number(v.hrdc) > 0 ? fmt(s.sdgReason43Hrdc, { n: v.hrdc }) : "",
+        rest: Number(v.low) > 0 ? s.sdgReason43Rest : "",
+      });
+    case "demand":
+      return fmt(s.sdgReason85, { demand: v.demand });
+    case "productivity":
+      return s.sdgReason82;
+    default:
+      return String(v.reason ?? "");
+  }
+}
+
+function PathwayView({ s, locale, data }: { s: Strings; locale: Locale; data: PathwayData }) {
   const { pathway, role, skillNames } = data;
   const backHref = `/results?profile=${encodeURIComponent(data.profile.ref)}`;
 
@@ -79,7 +104,7 @@ function PathwayView({ s, data }: { s: Strings; data: PathwayData }) {
         </p>
         <div className="flex flex-wrap gap-1">
           {role.sdgIds.map((g) => (
-            <SdgChip key={g} goal={g} />
+            <SdgChip key={g} goal={g} locale={locale} />
           ))}
         </div>
       </header>
@@ -199,11 +224,16 @@ function PathwayView({ s, data }: { s: Strings; data: PathwayData }) {
           {data.contributions.map((c) => (
             <li key={c.target} className="flex flex-col gap-1 sm:flex-row sm:items-start sm:gap-3">
               <span className="shrink-0">
-                <SdgChip goal={c.goal} compact title={`SDG ${c.goal}: ${SDG_GOALS[c.goal]?.en ?? ""}`} />{" "}
-                <strong>Target {c.target}</strong>
+                <SdgChip goal={c.goal} compact locale={locale} title={`SDG ${c.goal}: ${(locale === "ms" ? SDG_GOALS[c.goal]?.ms : SDG_GOALS[c.goal]?.en) ?? ""}`} />{" "}
+                <strong>
+                  {s.sdgTarget} {c.target}
+                </strong>
               </span>
               <span>
-                <span className="text-zinc-500">{SDG_TARGETS[c.target] ?? ""}.</span> {c.reason}
+                <span className="text-zinc-500" lang="en">
+                  {SDG_TARGETS[c.target] ?? ""}.
+                </span>{" "}
+                {reasonText(s, c)}
               </span>
             </li>
           ))}
@@ -214,7 +244,7 @@ function PathwayView({ s, data }: { s: Strings; data: PathwayData }) {
             <ul className="mt-1 flex flex-wrap gap-2">
               {data.skillGoals.map((g) => (
                 <li key={g.goal}>
-                  <SdgChip goal={g.goal} title={g.skills.join(", ")} />
+                  <SdgChip goal={g.goal} locale={locale} title={g.skills.join(", ")} />
                 </li>
               ))}
             </ul>

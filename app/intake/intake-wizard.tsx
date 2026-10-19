@@ -17,9 +17,8 @@ const input = "w-full rounded-md border border-zinc-300 bg-transparent px-3 py-2
 const primary = "rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50";
 const secondary = "rounded-md border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700";
 
-export function IntakeWizard({ catalog, samples }: { catalog: CatalogSkill[]; samples: { key: string; draft: ProfileDraft }[] }) {
+export function IntakeWizard({ catalog, samples, locale }: { catalog: CatalogSkill[]; samples: { key: string; draft: ProfileDraft }[]; locale: Locale }) {
   const router = useRouter();
-  const [locale, setLocale] = useState<Locale>("en");
   const s = t(locale);
   const [step, setStep] = useState<Step>("choose");
   const [source, setSource] = useState<Source>("form");
@@ -56,14 +55,9 @@ export function IntakeWizard({ catalog, samples }: { catalog: CatalogSkill[]; sa
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">{s.intakeTitle}</h1>
-          <p className="mt-1 text-zinc-600 dark:text-zinc-400">{s.intakeIntro}</p>
-        </div>
-        <button type="button" onClick={() => setLocale(locale === "en" ? "ms" : "en")} className="shrink-0 text-sm text-emerald-700 underline dark:text-emerald-400">
-          {s.intakeLanguage}
-        </button>
+      <div>
+        <h1 className="text-3xl font-semibold tracking-tight">{s.intakeTitle}</h1>
+        <p className="mt-1 text-zinc-600 dark:text-zinc-400">{s.intakeIntro}</p>
       </div>
       <p className="rounded-md bg-zinc-100 p-3 text-xs text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">🔒 {s.intakePrivacy}</p>
       {error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-800 dark:bg-red-950 dark:text-red-200">{error}</p>}
