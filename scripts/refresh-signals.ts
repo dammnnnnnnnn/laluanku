@@ -6,9 +6,9 @@ config({ path: [".env.local", ".env"], quiet: true });
 
 async function main() {
   const { getDb } = await import("../lib/db");
-  const { refreshSignals } = await import("../lib/signals/refresh");
+  const { runRefreshPipeline } = await import("../lib/refresh-pipeline");
   const db = getDb();
-  const summary = await refreshSignals(db);
+  const summary = await runRefreshPipeline(db);
   console.log(JSON.stringify(summary, null, 2));
   await db.$client.end();
 }
