@@ -81,13 +81,19 @@ export const roleSkills = pgTable(
 // Curated catalog: the ONLY place pathways may draw courses from.
 export const courses = pgTable("courses", {
   id: serial("id").primaryKey(),
+  slug: text("slug").unique(),
   title: text("title").notNull(),
   provider: text("provider").notNull(),
   url: text("url").notNull(),
   cost: text("cost", { enum: COURSE_COSTS }).notNull(),
   hours: integer("hours").notNull(),
+  // True when the provider states no total time and the hours are our estimate.
+  hoursEstimated: boolean("hours_estimated").notNull().default(false),
   language: text("language").notNull(),
   skillIds: integer("skill_ids").array().notNull().default(emptyIntArray),
+  // Skills the course assumes you already have (used to order a pathway).
+  requiresSkillIds: integer("requires_skill_ids").array().notNull().default(emptyIntArray),
+  notes: text("notes").notNull().default(""),
   verifiedAt: date("verified_at", { mode: "string" }),
 });
 

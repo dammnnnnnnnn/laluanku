@@ -7,6 +7,7 @@ Curated baseline data loaded by `npm run db:seed`. Every file is validated with 
 | `skills.json` | 89 skills, each with a category, SDG ids and a one-line SDG reason |
 | `roles.json` | 24 emerging and 6 declining roles, each with a cited source, SDG targets, AI exposure level, O*NET RIASEC profile and required skills (importance 1–3) |
 | `signals.json` | 36 dated trend signals from real reports, research and news |
+| `courses.json` | 46 courses, the only source for learning pathways (see below) |
 | `scenarios.json` | `moderate_2030` and `fast_ai_2030` |
 | `profiles/*.json` | 3 **synthetic** sample profiles (fictional people, no real CVs) |
 
@@ -49,6 +50,13 @@ Each role's `riasec` scores and `riasec_code` come from the O*NET 31.0 `career_i
 
 This includes information from the [O*NET 31.0 Database](https://www.onetcenter.org/database.html) by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under the [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license. Changes: rescaled scores and our role-to-occupation mapping. O*NET® is a trademark of USDOL/ETA.
 
-## Not yet seeded
+## Courses
 
-- `courses` (step 6). The table exists and is empty for now.
+Every course URL was opened on **2026-10-20**, and its title, provider, cost and duration were read from the provider's page.
+
+- **Providers:** Kaggle Learn, Cisco Networking Academy, Microsoft Learn, UiPath Academy, HubSpot Academy, Anthropic Academy, GitHub Skills, Canva Design School, freeCodeCamp, Harvard CS50x, University of Helsinki (Elements of AI, Ethics of AI), LearnFree, GHG Protocol, Coursera and edX courses from universities and Google, and a SEDA solar PV course at Pahang Skills Development Centre.
+- **`cost`:** `free` means free to take, including any certificate. `low` means Coursera or edX, where the certificate is paid (a subscription or a per-course fee), auditing is sometimes free, and financial aid exists. `hrdc_claimable` means the provider's page says the course is HRD Corp (HRDF) claimable; approval is per run, so the notes say to confirm before applying.
+- **`hours`:** the provider's stated time, or a total computed from stated module times or weeks × hours per week. `hours_estimated: true` marks our estimate where the provider gives no total (for example Elements of AI and LearnFree Excel).
+- **`skills` / `requires`:** the team maps each course to catalog skills, and `requires` lists assumed skills, used to order pathways.
+
+**Left out because they couldn't be verified on 2026-10-20:** an OpenWHO hand-hygiene course (page not found), Cisco's Introduction to IoT (empty page), the MIT supply chain course on edX (404), and a specific AI Untuk Rakyat course URL. Most skills without a course are clinical, agricultural or practical skills that need formal training or work experience; the pathway says so.

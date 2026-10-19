@@ -15,13 +15,13 @@ async function main() {
   const first = await runSeed(db);
   await runSeed(db); // must be idempotent
 
-  const tables = { skills: schema.skills, roles: schema.roles, role_skills: schema.roleSkills, signals: schema.signals, scenarios: schema.scenarios, profiles: schema.profiles };
+  const tables = { skills: schema.skills, roles: schema.roles, role_skills: schema.roleSkills, signals: schema.signals, scenarios: schema.scenarios, profiles: schema.profiles, courses: schema.courses };
   for (const [name, table] of Object.entries(tables)) {
     const [{ n }] = await db.select({ n: count() }).from(table);
     console.log(`${name.padEnd(12)} ${n}`);
   }
 
-  const expected = { skills: first.skills, roles: first.roles, role_skills: first.roleSkills, signals: first.signals };
+  const expected = { skills: first.skills, roles: first.roles, role_skills: first.roleSkills, signals: first.signals, courses: first.courses };
   for (const [name, n] of Object.entries(expected)) {
     const [{ c }] = await db.execute<{ c: number }>(sql.raw(`select count(*)::int as c from ${name}`)).then((r) => r.rows);
     if (c !== n) throw new Error(`${name}: expected ${n} rows after re-seed, found ${c}`);
