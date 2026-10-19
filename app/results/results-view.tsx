@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { fmt, type Strings } from "@/lib/i18n";
+import { RIASEC_TYPES, TYPE_INFO, riasecCode, sharedTopTypes, type RiasecScores } from "@/lib/riasec";
 import { finalScore, type Weights } from "@/lib/scoring/engine";
 import type { ResultsData, RoleResult, SignalRef } from "@/lib/scoring/results";
 
@@ -28,6 +29,7 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
   const normalized = {
     skill: weightSum ? weights.skill / weightSum : 0,
     demand: weightSum ? weights.demand / weightSum : 0,
+    interest: weightSum && data.profile.hasInterest ? weights.interest / weightSum : 0,
   };
 
   const ranked: Ranked[] = useMemo(
@@ -38,7 +40,7 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
           const d = role.demand[scenarioKey];
           return {
             role,
-            score: finalScore({ skill: role.skill.score, demand: d.normalized, interest: null }, weights),
+            score: finalScore({ skill: role.skill.score, demand: d.normalized, interest: role.interest }, weights),
             band: normalized.demand * d.band,
           };
         })
@@ -120,7 +122,16 @@ export function ResultsView({ data, s }: { data: ResultsData; s: Strings }) {
           <p className="text-xs text-zinc-600 dark:text-zinc-400">{s.weightsHelp}</p>
           <WeightSlider label={s.weightSkill} value={weights.skill} share={normalized.skill} onChange={(v) => setWeights({ ...weights, skill: v })} />
           <WeightSlider label={s.weightDemand} value={weights.demand} share={normalized.demand} onChange={(v) => setWeights({ ...weights, demand: v })} />
-          {!data.profile.hasInterest && <p className="mt-1 text-xs text-zinc-500">{s.weightInterest}: {s.weightInterestLater}</p>}
+          {data.profile.hasInterest ? (
+            <WeightSlider label={s.weightInterest} value={weights.interest} share={normalized.interest} onChange={(v) => setWeights({ ...weights, interest: v })} />
+          ) : (
+            <p className="mt-1 text-xs text-zinc-500">
+              {s.weightInterest}: {s.weightInterestLater}{" "}
+              <Link href="/intake" className="underline">
+                {s.navIntake}
+              </Link>
+            </p>
+          )}
           <div className="mt-2 flex flex-wrap items-center gap-4 text-sm">
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={includeDeclining} onChange={(e) => setIncludeDeclining(e.target.checked)} />
@@ -274,7 +285,7 @@ function RoleCard({
   ranked: Ranked;
   data: ResultsData;
   scenarioKey: string;
-  weights: { skill: number; demand: number };
+  weights: { skill: number; demand: number; interest: number };
   s: Strings;
 }) {
   const { role, score, band } = ranked;
@@ -322,9 +333,17 @@ function RoleCard({
             ({s.confidence}: {confLabel})
           </span>
         </p>
+        {role.interest !== null && (
+          <p className="flex items-center gap-2">
+            <span className="w-20">{s.interestScore}</span>
+            <Bar value={role.interest} tone="neutral" />
+            <span className="tabular-nums">{pct(role.interest)}</span>
+          </p>
+        )}
       </div>
       <p className="mt-2 rounded bg-zinc-100 px-2 py-1 font-mono text-xs dark:bg-zinc-900">
-        {s.formula}: {weights.skill.toFixed(2)} × {pct(role.skill.score)} + {weights.demand.toFixed(2)} × {pct(d.normalized)} = {pct(score)}
+        {s.formula}: {weights.skill.toFixed(2)} × {pct(role.skill.score)} + {weights.demand.toFixed(2)} × {pct(d.normalized)}
+        {role.interest !== null && ` + ${weights.interest.toFixed(2)} × ${pct(role.interest)}`} = {pct(score)}
       </p>
 
       <div className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
@@ -360,6 +379,8 @@ function RoleCard({
         <p className="mt-1 text-xs text-zinc-500">{role.sdgReason}</p>
       </div>
 
+      {data.profile.riasec && role.riasec && <InterestCompare s={s} user={data.profile.riasec} role={role.riasec} source={role.riasecSource} />}
+
       <details className="mt-3 text-sm">
         <summary className="cursor-pointer font-medium">
           {s.signalsBehind} ({role.signalCount})
@@ -389,5 +410,54 @@ function RoleCard({
         </p>
       </details>
     </article>
+  );
+}
+
+function InterestCompare({ s, user, role, source }: { s: Strings; user: RiasecScores; role: RiasecScores; source: string | null }) {
+  const shared = sharedTopTypes(user, role);
+  const names = (types: string[]) => types.map((t) => TYPE_INFO[t as keyof typeof TYPE_INFO].en).join(" & ");
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
+      <RiasecHexagon user={user} role={role} />
+      <div className="min-w-0 flex-1">
+        <p>
+          <span className="text-emerald-700 dark:text-emerald-400">■</span> {s.riasecYou}: <strong>{riasecCode(user)}</strong> ·{" "}
+          <span className="text-sky-700 dark:text-sky-400">■</span> {s.riasecRole}: <strong>{riasecCode(role)}</strong>
+        </p>
+        <p className="mt-1 text-zinc-700 dark:text-zinc-300">
+          {shared.length > 0 ? fmt(s.interestShared, { types: names(shared) }) : s.interestDiffer}
+        </p>
+        {source && <p className="mt-1 text-xs text-zinc-500">{source}</p>}
+      </div>
+    </div>
+  );
+}
+
+/** Two RIASEC profiles on a hexagon: the person (green) and the role (blue). */
+function RiasecHexagon({ user, role }: { user: RiasecScores; role: RiasecScores }) {
+  const size = 132;
+  const c = size / 2;
+  const r = 46;
+  const point = (i: number, v: number) => {
+    const a = (Math.PI / 3) * i - Math.PI / 2;
+    return [c + Math.cos(a) * r * v, c + Math.sin(a) * r * v] as const;
+  };
+  const poly = (p: RiasecScores) => RIASEC_TYPES.map((t, i) => point(i, Math.max(0.05, p[t])).join(",")).join(" ");
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`Interest profiles: you ${riasecCode(user)}, role ${riasecCode(role)}`}>
+      {[0.33, 0.66, 1].map((k) => (
+        <polygon key={k} points={RIASEC_TYPES.map((_, i) => point(i, k).join(",")).join(" ")} className="fill-none stroke-zinc-300 dark:stroke-zinc-700" />
+      ))}
+      <polygon points={poly(role)} className="fill-sky-500/20 stroke-sky-600" strokeWidth={1.5} />
+      <polygon points={poly(user)} className="fill-emerald-500/20 stroke-emerald-600" strokeWidth={1.5} />
+      {RIASEC_TYPES.map((t, i) => {
+        const [x, y] = point(i, 1.25);
+        return (
+          <text key={t} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="fill-zinc-500 text-[10px]">
+            {t}
+          </text>
+        );
+      })}
+    </svg>
   );
 }

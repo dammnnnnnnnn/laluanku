@@ -1,7 +1,8 @@
-import { asc, eq, max } from "drizzle-orm";
+import { asc, eq, max, or } from "drizzle-orm";
 import { getSkillSimilarity, type SimilarityMethod } from "../embeddings";
 import { profiles, roleSkills, roles, scenarios, signals, skills } from "../db/schema";
 import type { AnyDb } from "../db/types";
+import { interestFit, type RiasecScores } from "../riasec";
 import { DEFAULT_WEIGHTS } from "./config";
 import {
   roleContributions,
@@ -51,6 +52,11 @@ export type RoleResult = {
   sdgReason: string;
   sourceName: string;
   sourceUrl: string;
+  riasec: RiasecScores | null;
+  riasecCode: string | null;
+  riasecSource: string | null;
+  /** Interest fit 0..1 from the user's quiz; null if the quiz was skipped. */
+  interest: number | null;
   skill: SkillMatch;
   demand: Record<string, ScenarioDemand>;
   signalCount: number;
@@ -69,6 +75,7 @@ export type ResultsData = {
     isSample: boolean;
     skills: { skillId: number; name: string; level: number }[];
     hasInterest: boolean;
+    riasec: RiasecScores | null;
   };
   samples: { key: string; displayName: string; headline: string }[];
   scenarios: { key: string; name: string; description: string; notes: string; multiplier: number }[];
@@ -79,13 +86,12 @@ export type ResultsData = {
   signals: Record<number, SignalRef>;
 };
 
-/** Loads everything /results needs for one profile (sample key or numeric id). */
+/** Loads everything /results needs for one profile: a sample key, or a saved profile's public id. */
 export async function loadResults(db: AnyDb, profileRef: string, asOf = new Date()): Promise<ResultsData | null> {
-  const isId = /^\d+$/.test(profileRef);
   const [profile] = await db
     .select()
     .from(profiles)
-    .where(isId ? eq(profiles.id, Number(profileRef)) : eq(profiles.sampleKey, profileRef))
+    .where(or(eq(profiles.sampleKey, profileRef), eq(profiles.publicId, profileRef)))
     .limit(1);
   if (!profile) return null;
 
@@ -143,6 +149,10 @@ export async function loadResults(db: AnyDb, profileRef: string, asOf = new Date
       sdgReason: r.sdgReason,
       sourceName: r.sourceName,
       sourceUrl: r.sourceUrl,
+      riasec: r.riasec,
+      riasecCode: r.riasecCode,
+      riasecSource: r.riasecSource,
+      interest: profile.riasec && r.riasec ? interestFit(profile.riasec, r.riasec) : null,
       skill: skillMatch(r.id, roleSkillRows, profileSkills, similarity),
       demand,
       signalCount: contributions.length,
@@ -189,6 +199,7 @@ export async function loadResults(db: AnyDb, profileRef: string, asOf = new Date
       isSample: profile.isSample,
       skills: profileSkills,
       hasInterest,
+      riasec: profile.riasec,
     },
     samples: sampleRows
       .filter((s): s is { key: string; json: typeof s.json } => Boolean(s.key))
