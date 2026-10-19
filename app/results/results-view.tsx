@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SdgChip } from "../sdg-chip";
 import { useMemo, useState } from "react";
 import { fmt, type Strings } from "@/lib/i18n";
 import { RIASEC_TYPES, TYPE_INFO, riasecCode, sharedTopTypes, type RiasecScores } from "@/lib/riasec";
@@ -308,8 +309,11 @@ function RoleCard({
             {role.title}
             {role.outlook === "declining" && <span className="ml-2 text-sm font-normal text-rose-700 dark:text-rose-400">↓ {s.signalsDeclining}</span>}
           </h3>
-          <p className="text-sm text-zinc-500">
-            {role.sector} · {s.sdgLabel} {role.sdgIds.join(", ")}
+          <p className="text-sm text-zinc-500">{role.sector}</p>
+          <p className="mt-1 flex flex-wrap gap-1">
+            {role.sdgIds.map((g) => (
+              <SdgChip key={g} goal={g} title={`${role.sdgTargets.filter((tg) => tg.startsWith(`${g}.`)).join(", ")} · ${role.sdgReason}`} />
+            ))}
           </p>
         </div>
         <div className="text-right">
@@ -383,6 +387,13 @@ function RoleCard({
       </div>
 
       {data.profile.riasec && role.riasec && <InterestCompare s={s} user={data.profile.riasec} role={role.riasec} source={role.riasecSource} />}
+
+      <Link
+        href={`/pathway/${role.slug}?profile=${encodeURIComponent(data.profile.ref)}`}
+        className="mt-3 inline-block rounded-md bg-emerald-700 px-3 py-1.5 text-sm font-medium text-white"
+      >
+        {s.pathwayLink} →
+      </Link>
 
       <details className="mt-3 text-sm">
         <summary className="cursor-pointer font-medium">

@@ -32,6 +32,8 @@ export type ResultsData = {
   profile: {
     id: number;
     sampleKey: string | null;
+    /** The reference used in links: the sample key or the public id. */
+    ref: string;
     displayName: string;
     headline: string;
     isSample: boolean;
@@ -104,6 +106,7 @@ export async function loadResults(db: AnyDb, profileRef: string, asOf = new Date
     profile: {
       id: profile.id,
       sampleKey: profile.sampleKey,
+      ref: profile.sampleKey ?? profile.publicId ?? profileRef,
       displayName: profile.extractedJson.displayName,
       headline: profile.extractedJson.headline,
       isSample: profile.isSample,
