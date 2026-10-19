@@ -1,0 +1,54 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+*.tsbuildinfo
+
+# testing
+coverage/
+
+# env files (never commit secrets; .env.example is the only one tracked)
+.env
+.env*.local
+.env.development
+.env.production
+.env.test
+!.env.example
+
+# uploads (CVs are never stored; keep only the extracted profile)
+uploads/
+tmp/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Replit
+.replit.local
+.cache/
+.upm/
+
+# misc
+*.pem
+.vercel
