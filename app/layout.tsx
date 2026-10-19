@@ -34,6 +34,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/" className="font-semibold">
               {s.appName}
             </Link>
+            <Link href="/results" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
+              {s.navResults}
+            </Link>
             <Link href="/signals" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
               {s.navSignals}
             </Link>
