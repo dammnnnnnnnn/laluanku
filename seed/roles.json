@@ -6,12 +6,40 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [8, 9],
-    "sdg_targets": ["8.2", "9.5"],
+    "sdg_ids": [
+      8,
+      9
+    ],
+    "sdg_targets": [
+      "8.2",
+      "9.5"
+    ],
     "sdg_reason": "Data-driven decisions raise productivity (8.2) and support innovation capacity (9.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Data Analysts and Scientists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "data-analysis": 3, "spreadsheets": 3, "sql": 3, "data-visualisation": 3, "analytical-thinking": 3, "statistics": 2, "python-programming": 2, "bi-dashboards": 2, "generative-ai-use": 2, "communication": 2, "attention-to-detail": 2 }
+    "riasec": {
+      "R": 0.19,
+      "I": 1,
+      "A": 0.27,
+      "S": 0.11,
+      "E": 0.12,
+      "C": 0.73
+    },
+    "riasec_code": "IC",
+    "riasec_source": "O*NET 31.0 career interest types: 15-2051.00 Data Scientists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "data-analysis": 3,
+      "spreadsheets": 3,
+      "sql": 3,
+      "data-visualisation": 3,
+      "analytical-thinking": 3,
+      "statistics": 2,
+      "python-programming": 2,
+      "bi-dashboards": 2,
+      "generative-ai-use": 2,
+      "communication": 2,
+      "attention-to-detail": 2
+    }
   },
   {
     "slug": "bi-analyst",
@@ -20,12 +48,37 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [8, 9],
-    "sdg_targets": ["8.2", "9.5"],
+    "sdg_ids": [
+      8,
+      9
+    ],
+    "sdg_targets": [
+      "8.2",
+      "9.5"
+    ],
     "sdg_reason": "Better performance monitoring helps organisations become more productive (8.2) and innovative (9.5).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (fastest-growing: Business Intelligence Analysts)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "bi-dashboards": 3, "spreadsheets": 3, "data-visualisation": 3, "communication": 3, "sql": 2, "business-process-analysis": 2, "data-analysis": 2, "data-warehousing": 1 }
+    "riasec": {
+      "R": 0.04,
+      "I": 0.74,
+      "A": 0.16,
+      "S": 0.14,
+      "E": 0.57,
+      "C": 0.8
+    },
+    "riasec_code": "CIE",
+    "riasec_source": "O*NET 31.0 career interest types: 15-2051.01 Business Intelligence Analysts (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "bi-dashboards": 3,
+      "spreadsheets": 3,
+      "data-visualisation": 3,
+      "communication": 3,
+      "sql": 2,
+      "business-process-analysis": 2,
+      "data-analysis": 2,
+      "data-warehousing": 1
+    }
   },
   {
     "slug": "ai-ml-specialist",
@@ -34,12 +87,38 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [9, 8],
-    "sdg_targets": ["9.5", "8.2"],
+    "sdg_ids": [
+      9,
+      8
+    ],
+    "sdg_targets": [
+      "9.5",
+      "8.2"
+    ],
     "sdg_reason": "AI systems drive technological upgrading (9.5) and productivity growth (8.2).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: AI and Machine Learning Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "python-programming": 3, "machine-learning": 3, "statistics": 3, "problem-solving": 3, "data-engineering": 2, "cloud-computing": 2, "sql": 2, "big-data-tools": 2, "ai-ethics-governance": 2 }
+    "riasec": {
+      "R": 0.46,
+      "I": 1,
+      "A": 0.33,
+      "S": 0.17,
+      "E": 0.25,
+      "C": 0.63
+    },
+    "riasec_code": "IC",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1221.00 Computer and Information Research Scientists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "python-programming": 3,
+      "machine-learning": 3,
+      "statistics": 3,
+      "problem-solving": 3,
+      "data-engineering": 2,
+      "cloud-computing": 2,
+      "sql": 2,
+      "big-data-tools": 2,
+      "ai-ethics-governance": 2
+    }
   },
   {
     "slug": "software-developer",
@@ -48,12 +127,38 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [9, 8],
-    "sdg_targets": ["9.5", "9.c", "8.2"],
+    "sdg_ids": [
+      9,
+      8
+    ],
+    "sdg_targets": [
+      "9.5",
+      "9.c",
+      "8.2"
+    ],
     "sdg_reason": "Digital products expand access to services (9.c) and drive innovation and productivity (9.5, 8.2).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 and 2.4 (fastest-growing and largest-growing: Software and Applications Developers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "software-development": 3, "problem-solving": 3, "web-development": 2, "cloud-computing": 2, "generative-ai-use": 2, "agile-methods": 2, "devops-cicd": 1, "sql": 1 }
+    "riasec": {
+      "R": 0.44,
+      "I": 0.84,
+      "A": 0.23,
+      "S": 0.14,
+      "E": 0.15,
+      "C": 0.77
+    },
+    "riasec_code": "IC",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1252.00 Software Developers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "software-development": 3,
+      "problem-solving": 3,
+      "web-development": 2,
+      "cloud-computing": 2,
+      "generative-ai-use": 2,
+      "agile-methods": 2,
+      "devops-cicd": 1,
+      "sql": 1
+    }
   },
   {
     "slug": "information-security-analyst",
@@ -62,12 +167,36 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [9, 16],
-    "sdg_targets": ["9.1", "16.10"],
+    "sdg_ids": [
+      9,
+      16
+    ],
+    "sdg_targets": [
+      "9.1",
+      "16.10"
+    ],
     "sdg_reason": "Secure systems make digital infrastructure resilient (9.1) and protect people's data (16.10).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Information Security Analysts; Security Management Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "cybersecurity": 3, "network-security": 3, "risk-assessment": 3, "attention-to-detail": 3, "data-protection": 2, "cloud-computing": 2, "it-support": 1 }
+    "riasec": {
+      "R": 0.43,
+      "I": 0.73,
+      "A": 0.06,
+      "S": 0.18,
+      "E": 0.31,
+      "C": 0.85
+    },
+    "riasec_code": "CI",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1212.00 Information Security Analysts (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "cybersecurity": 3,
+      "network-security": 3,
+      "risk-assessment": 3,
+      "attention-to-detail": 3,
+      "data-protection": 2,
+      "cloud-computing": 2,
+      "it-support": 1
+    }
   },
   {
     "slug": "ux-ui-designer",
@@ -76,12 +205,36 @@
     "sector": "Creative & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [9, 10],
-    "sdg_targets": ["9.c", "10.2"],
+    "sdg_ids": [
+      9,
+      10
+    ],
+    "sdg_targets": [
+      "9.c",
+      "10.2"
+    ],
     "sdg_reason": "Accessible design widens access to digital services (9.c) and includes people who are often left out (10.2).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: UI and UX Designers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "ux-research": 3, "ui-design": 3, "empathy-listening": 3, "creative-thinking": 3, "graphic-design-tools": 2, "communication": 2, "web-development": 1 }
+    "riasec": {
+      "R": 0.26,
+      "I": 0.65,
+      "A": 0.58,
+      "S": 0.2,
+      "E": 0.36,
+      "C": 0.57
+    },
+    "riasec_code": "IAC",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1255.00 Web and Digital Interface Designers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "ux-research": 3,
+      "ui-design": 3,
+      "empathy-listening": 3,
+      "creative-thinking": 3,
+      "graphic-design-tools": 2,
+      "communication": 2,
+      "web-development": 1
+    }
   },
   {
     "slug": "iot-specialist",
@@ -90,12 +243,37 @@
     "sector": "Smart manufacturing",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [9, 2],
-    "sdg_targets": ["9.4", "9.5", "2.4"],
+    "sdg_ids": [
+      9,
+      2
+    ],
+    "sdg_targets": [
+      "9.4",
+      "9.5",
+      "2.4"
+    ],
     "sdg_reason": "Connected equipment upgrades industry (9.4) and enables precision agriculture (2.4).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Internet of Things Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "iot-systems": 3, "electronics-troubleshooting": 2, "quality-control": 2, "python-programming": 2, "data-analysis": 2, "problem-solving": 2, "network-security": 1 }
+    "riasec": {
+      "R": 0.78,
+      "I": 0.76,
+      "A": 0.14,
+      "S": 0.14,
+      "E": 0.16,
+      "C": 0.73
+    },
+    "riasec_code": "RIC",
+    "riasec_source": "O*NET 31.0 career interest types: 17-2061.00 Computer Hardware Engineers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "iot-systems": 3,
+      "electronics-troubleshooting": 2,
+      "quality-control": 2,
+      "python-programming": 2,
+      "data-analysis": 2,
+      "problem-solving": 2,
+      "network-security": 1
+    }
   },
   {
     "slug": "devops-engineer",
@@ -104,12 +282,33 @@
     "sector": "Technology & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [9],
-    "sdg_targets": ["9.1"],
+    "sdg_ids": [
+      9
+    ],
+    "sdg_targets": [
+      "9.1"
+    ],
     "sdg_reason": "Reliable deployment pipelines keep digital infrastructure resilient (9.1).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: DevOps Engineers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "devops-cicd": 3, "cloud-computing": 3, "software-development": 2, "cybersecurity": 2, "process-automation": 2, "problem-solving": 2 }
+    "riasec": {
+      "R": 0.53,
+      "I": 0.51,
+      "A": 0,
+      "S": 0.2,
+      "E": 0.41,
+      "C": 0.86
+    },
+    "riasec_code": "CRI",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1244.00 Network and Computer Systems Administrators (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "devops-cicd": 3,
+      "cloud-computing": 3,
+      "software-development": 2,
+      "cybersecurity": 2,
+      "process-automation": 2,
+      "problem-solving": 2
+    }
   },
   {
     "slug": "process-automation-specialist",
@@ -118,12 +317,38 @@
     "sector": "Business services",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [8, 9],
-    "sdg_targets": ["8.2", "9.4"],
+    "sdg_ids": [
+      8,
+      9
+    ],
+    "sdg_targets": [
+      "8.2",
+      "9.4"
+    ],
     "sdg_reason": "Automating routine work frees people for higher-value tasks (8.2) and modernises processes (9.4).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (growing: Process Automation Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "process-automation": 3, "no-code-tools": 3, "business-process-analysis": 3, "spreadsheets": 2, "generative-ai-use": 2, "prompt-writing": 2, "problem-solving": 2, "change-management": 2, "office-administration": 1 }
+    "riasec": {
+      "R": 0.38,
+      "I": 0.9,
+      "A": 0.16,
+      "S": 0.15,
+      "E": 0.21,
+      "C": 0.82
+    },
+    "riasec_code": "IC",
+    "riasec_source": "O*NET 31.0 career interest types: 15-1211.00 Computer Systems Analysts (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "process-automation": 3,
+      "no-code-tools": 3,
+      "business-process-analysis": 3,
+      "spreadsheets": 2,
+      "generative-ai-use": 2,
+      "prompt-writing": 2,
+      "problem-solving": 2,
+      "change-management": 2,
+      "office-administration": 1
+    }
   },
   {
     "slug": "renewable-energy-engineer",
@@ -132,12 +357,35 @@
     "sector": "Green economy",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [7, 13],
-    "sdg_targets": ["7.2", "13.2"],
+    "sdg_ids": [
+      7,
+      13
+    ],
+    "sdg_targets": [
+      "7.2",
+      "13.2"
+    ],
     "sdg_reason": "Raises the share of renewable energy (7.2) and cuts greenhouse gas emissions (13.2).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Renewable Energy Engineers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "solar-pv-systems": 3, "electrical-systems": 3, "energy-efficiency": 2, "project-management": 2, "systems-thinking": 2, "environmental-regulations": 1 }
+    "riasec": {
+      "R": 0.83,
+      "I": 0.67,
+      "A": 0.18,
+      "S": 0.15,
+      "E": 0.34,
+      "C": 0.49
+    },
+    "riasec_code": "RIC",
+    "riasec_source": "O*NET 31.0 career interest types: 17-2199.11 Solar Energy Systems Engineers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "solar-pv-systems": 3,
+      "electrical-systems": 3,
+      "energy-efficiency": 2,
+      "project-management": 2,
+      "systems-thinking": 2,
+      "environmental-regulations": 1
+    }
   },
   {
     "slug": "solar-pv-technician",
@@ -146,12 +394,37 @@
     "sector": "Green economy",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [7, 13, 4],
-    "sdg_targets": ["7.2", "13.2", "4.3"],
+    "sdg_ids": [
+      7,
+      13,
+      4
+    ],
+    "sdg_targets": [
+      "7.2",
+      "13.2",
+      "4.3"
+    ],
     "sdg_reason": "Expands renewable energy (7.2, 13.2) through accessible technical and vocational training (4.3).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (growing: Solar Energy Installation and System Engineers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "solar-pv-systems": 3, "electrical-systems": 3, "workplace-safety": 3, "electronics-troubleshooting": 2, "attention-to-detail": 2, "problem-solving": 2 }
+    "riasec": {
+      "R": 1,
+      "I": 0.27,
+      "A": 0.06,
+      "S": 0.03,
+      "E": 0.12,
+      "C": 0.51
+    },
+    "riasec_code": "RC",
+    "riasec_source": "O*NET 31.0 career interest types: 47-2231.00 Solar Photovoltaic Installers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "solar-pv-systems": 3,
+      "electrical-systems": 3,
+      "workplace-safety": 3,
+      "electronics-troubleshooting": 2,
+      "attention-to-detail": 2,
+      "problem-solving": 2
+    }
   },
   {
     "slug": "environmental-engineer",
@@ -160,12 +433,37 @@
     "sector": "Green economy",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [6, 13, 15],
-    "sdg_targets": ["6.3", "13.2", "15.1"],
+    "sdg_ids": [
+      6,
+      13,
+      15
+    ],
+    "sdg_targets": [
+      "6.3",
+      "13.2",
+      "15.1"
+    ],
     "sdg_reason": "Improves water quality (6.3), cuts emissions (13.2) and protects ecosystems (15.1).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Environmental Engineers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "environmental-impact-assessment": 3, "environmental-regulations": 3, "waste-circular-economy": 2, "data-analysis": 2, "systems-thinking": 2, "esg-reporting": 1 }
+    "riasec": {
+      "R": 0.7,
+      "I": 0.85,
+      "A": 0.16,
+      "S": 0.2,
+      "E": 0.36,
+      "C": 0.6
+    },
+    "riasec_code": "IRC",
+    "riasec_source": "O*NET 31.0 career interest types: 17-2081.00 Environmental Engineers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "environmental-impact-assessment": 3,
+      "environmental-regulations": 3,
+      "waste-circular-economy": 2,
+      "data-analysis": 2,
+      "systems-thinking": 2,
+      "esg-reporting": 1
+    }
   },
   {
     "slug": "sustainability-specialist",
@@ -174,12 +472,36 @@
     "sector": "Green economy",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [12, 13],
-    "sdg_targets": ["12.6", "13.2"],
+    "sdg_ids": [
+      12,
+      13
+    ],
+    "sdg_targets": [
+      "12.6",
+      "13.2"
+    ],
     "sdg_reason": "Helps companies adopt and report sustainable practices (12.6) and cut emissions (13.2).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (fastest-growing #2: Sustainability Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "esg-reporting": 3, "carbon-accounting": 3, "environmental-regulations": 2, "data-analysis": 2, "spreadsheets": 2, "stakeholder-management": 2, "business-writing": 2 }
+    "riasec": {
+      "R": 0.18,
+      "I": 0.7,
+      "A": 0.25,
+      "S": 0.33,
+      "E": 0.68,
+      "C": 0.57
+    },
+    "riasec_code": "IEC",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1199.05 Sustainability Specialists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "esg-reporting": 3,
+      "carbon-accounting": 3,
+      "environmental-regulations": 2,
+      "data-analysis": 2,
+      "spreadsheets": 2,
+      "stakeholder-management": 2,
+      "business-writing": 2
+    }
   },
   {
     "slug": "ev-specialist",
@@ -188,12 +510,36 @@
     "sector": "Green economy",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [7, 11, 9],
-    "sdg_targets": ["7.3", "11.2"],
+    "sdg_ids": [
+      7,
+      11,
+      9
+    ],
+    "sdg_targets": [
+      "7.3",
+      "11.2"
+    ],
     "sdg_reason": "Supports cleaner, more energy-efficient transport (7.3, 11.2).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-growing: Autonomous and Electric Vehicle Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "ev-battery-systems": 3, "electrical-systems": 3, "electronics-troubleshooting": 2, "workplace-safety": 2, "problem-solving": 2, "iot-systems": 1 }
+    "riasec": {
+      "R": 1,
+      "I": 0.43,
+      "A": 0,
+      "S": 0.08,
+      "E": 0.1,
+      "C": 0.55
+    },
+    "riasec_code": "RCI",
+    "riasec_source": "O*NET 31.0 career interest types: 49-3023.00 Automotive Service Technicians and Mechanics (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "ev-battery-systems": 3,
+      "electrical-systems": 3,
+      "electronics-troubleshooting": 2,
+      "workplace-safety": 2,
+      "problem-solving": 2,
+      "iot-systems": 1
+    }
   },
   {
     "slug": "nursing-professional",
@@ -202,12 +548,36 @@
     "sector": "Healthcare",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [3],
-    "sdg_targets": ["3.8", "3.c"],
+    "sdg_ids": [
+      3
+    ],
+    "sdg_targets": [
+      "3.8",
+      "3.c"
+    ],
     "sdg_reason": "Strengthens the health workforce (3.c) and access to health services (3.8).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.4 (largest-growing: Nursing Professionals)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "patient-care": 3, "clinical-nursing": 3, "infection-control": 3, "empathy-listening": 3, "health-records": 2, "communication": 2, "first-aid": 2, "resilience-adaptability": 2 }
+    "riasec": {
+      "R": 0.41,
+      "I": 0.62,
+      "A": 0.06,
+      "S": 0.76,
+      "E": 0.23,
+      "C": 0.63
+    },
+    "riasec_code": "SCI",
+    "riasec_source": "O*NET 31.0 career interest types: 29-1141.00 Registered Nurses (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "patient-care": 3,
+      "clinical-nursing": 3,
+      "infection-control": 3,
+      "empathy-listening": 3,
+      "health-records": 2,
+      "communication": 2,
+      "first-aid": 2,
+      "resilience-adaptability": 2
+    }
   },
   {
     "slug": "personal-care-aide",
@@ -216,12 +586,38 @@
     "sector": "Healthcare",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [3, 10, 8],
-    "sdg_targets": ["3.8", "10.2", "8.5"],
+    "sdg_ids": [
+      3,
+      10,
+      8
+    ],
+    "sdg_targets": [
+      "3.8",
+      "10.2",
+      "8.5"
+    ],
     "sdg_reason": "Supports healthy ageing (3.8) and inclusion of older people (10.2), and recognises care work as decent work (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.4 (largest-growing: Personal Care Aides)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "elderly-care": 3, "first-aid": 3, "empathy-listening": 3, "patient-care": 2, "communication": 2, "infection-control": 2, "multilingual-communication": 1 }
+    "riasec": {
+      "R": 0.42,
+      "I": 0.13,
+      "A": 0.13,
+      "S": 0.87,
+      "E": 0.26,
+      "C": 0.49
+    },
+    "riasec_code": "SCR",
+    "riasec_source": "O*NET 31.0 career interest types: 31-1122.00 Personal Care Aides (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "elderly-care": 3,
+      "first-aid": 3,
+      "empathy-listening": 3,
+      "patient-care": 2,
+      "communication": 2,
+      "infection-control": 2,
+      "multilingual-communication": 1
+    }
   },
   {
     "slug": "social-worker-counsellor",
@@ -230,12 +626,37 @@
     "sector": "Social services",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [3, 10, 1],
-    "sdg_targets": ["3.4", "10.2", "1.3"],
+    "sdg_ids": [
+      3,
+      10,
+      1
+    ],
+    "sdg_targets": [
+      "3.4",
+      "10.2",
+      "1.3"
+    ],
     "sdg_reason": "Supports mental health (3.4), social inclusion (10.2) and access to social protection (1.3).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.4 (largest-growing: Social Work and Counselling Professionals)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "counselling": 3, "case-management": 3, "empathy-listening": 3, "communication": 3, "records-management": 2, "multilingual-communication": 2 }
+    "riasec": {
+      "R": 0.16,
+      "I": 0.54,
+      "A": 0.22,
+      "S": 0.99,
+      "E": 0.26,
+      "C": 0.35
+    },
+    "riasec_code": "SI",
+    "riasec_source": "O*NET 31.0 career interest types: 21-1022.00 Healthcare Social Workers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "counselling": 3,
+      "case-management": 3,
+      "empathy-listening": 3,
+      "communication": 3,
+      "records-management": 2,
+      "multilingual-communication": 2
+    }
   },
   {
     "slug": "smart-farming-technician",
@@ -244,12 +665,35 @@
     "sector": "Smart agriculture",
     "outlook": "emerging",
     "ai_exposure": "low",
-    "sdg_ids": [2, 9],
-    "sdg_targets": ["2.3", "2.4"],
+    "sdg_ids": [
+      2,
+      9
+    ],
+    "sdg_targets": [
+      "2.3",
+      "2.4"
+    ],
     "sdg_reason": "Raises agricultural productivity (2.3) through more sustainable food production (2.4).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (growing: Agricultural Equipment Operators); WEF 2025, Fig. 2.4 (largest-growing: Farmworkers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "agricultural-machinery": 3, "precision-agriculture": 3, "drone-operation": 2, "iot-systems": 2, "crop-livestock-management": 2, "data-analysis": 1 }
+    "riasec": {
+      "R": 1,
+      "I": 0.25,
+      "A": 0,
+      "S": 0,
+      "E": 0.06,
+      "C": 0.45
+    },
+    "riasec_code": "RC",
+    "riasec_source": "O*NET 31.0 career interest types: 45-2091.00 Agricultural Equipment Operators (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "agricultural-machinery": 3,
+      "precision-agriculture": 3,
+      "drone-operation": 2,
+      "iot-systems": 2,
+      "crop-livestock-management": 2,
+      "data-analysis": 1
+    }
   },
   {
     "slug": "supply-chain-specialist",
@@ -258,12 +702,37 @@
     "sector": "Logistics",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [9, 12],
-    "sdg_targets": ["9.1", "12.3"],
+    "sdg_ids": [
+      9,
+      12
+    ],
+    "sdg_targets": [
+      "9.1",
+      "12.3"
+    ],
     "sdg_reason": "Builds resilient trade infrastructure (9.1) and reduces losses along supply chains (12.3).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (growing: Supply Chain and Logistics Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "supply-chain-planning": 3, "inventory-management": 3, "logistics-coordination": 3, "procurement": 2, "spreadsheets": 2, "data-analysis": 2, "communication": 2, "ecommerce-operations": 1 }
+    "riasec": {
+      "R": 0.23,
+      "I": 0.47,
+      "A": 0.02,
+      "S": 0.22,
+      "E": 0.67,
+      "C": 0.74
+    },
+    "riasec_code": "CEI",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1081.00 Logisticians (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "supply-chain-planning": 3,
+      "inventory-management": 3,
+      "logistics-coordination": 3,
+      "procurement": 2,
+      "spreadsheets": 2,
+      "data-analysis": 2,
+      "communication": 2,
+      "ecommerce-operations": 1
+    }
   },
   {
     "slug": "ecommerce-specialist",
@@ -272,12 +741,36 @@
     "sector": "Digital commerce",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [8, 9],
-    "sdg_targets": ["8.3", "9.c"],
+    "sdg_ids": [
+      8,
+      9
+    ],
+    "sdg_targets": [
+      "8.3",
+      "9.c"
+    ],
     "sdg_reason": "Helps micro and small enterprises reach customers (8.3) using digital channels (9.c).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (fastest-growing: E-commerce Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "ecommerce-operations": 3, "digital-marketing": 2, "customer-service": 2, "inventory-management": 2, "social-media-content": 2, "spreadsheets": 2, "data-analysis": 1 }
+    "riasec": {
+      "R": 0.01,
+      "I": 0.6,
+      "A": 0.26,
+      "S": 0.25,
+      "E": 0.75,
+      "C": 0.6
+    },
+    "riasec_code": "ECI",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1161.00 Market Research Analysts and Marketing Specialists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "ecommerce-operations": 3,
+      "digital-marketing": 2,
+      "customer-service": 2,
+      "inventory-management": 2,
+      "social-media-content": 2,
+      "spreadsheets": 2,
+      "data-analysis": 1
+    }
   },
   {
     "slug": "digital-marketing-specialist",
@@ -286,12 +779,36 @@
     "sector": "Creative & digital",
     "outlook": "emerging",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.3", "8.2"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.3",
+      "8.2"
+    ],
     "sdg_reason": "Helps enterprises, especially MSMEs, grow (8.3) and work more productively (8.2).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (fastest-growing: Digital Marketing and Strategy Specialists)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "digital-marketing": 3, "social-media-content": 3, "seo-sem": 2, "copywriting": 2, "data-analysis": 2, "generative-ai-use": 2, "creative-thinking": 2, "graphic-design-tools": 1 }
+    "riasec": {
+      "R": 0,
+      "I": 0.46,
+      "A": 0.37,
+      "S": 0.29,
+      "E": 0.76,
+      "C": 0.61
+    },
+    "riasec_code": "ECI",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1161.01 Search Marketing Strategists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "digital-marketing": 3,
+      "social-media-content": 3,
+      "seo-sem": 2,
+      "copywriting": 2,
+      "data-analysis": 2,
+      "generative-ai-use": 2,
+      "creative-thinking": 2,
+      "graphic-design-tools": 1
+    }
   },
   {
     "slug": "project-manager",
@@ -300,12 +817,38 @@
     "sector": "Business services",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [8, 9, 17],
-    "sdg_targets": ["8.2", "17.17"],
+    "sdg_ids": [
+      8,
+      9,
+      17
+    ],
+    "sdg_targets": [
+      "8.2",
+      "17.17"
+    ],
     "sdg_reason": "Efficient delivery raises productivity (8.2), and coordinating partners builds effective partnerships (17.17).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.4 (largest-growing: Project Managers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "project-management": 3, "stakeholder-management": 3, "communication": 3, "scheduling-coordination": 2, "budgeting": 2, "risk-assessment": 2, "agile-methods": 2, "leadership": 2 }
+    "riasec": {
+      "R": 0.08,
+      "I": 0.29,
+      "A": 0.1,
+      "S": 0.39,
+      "E": 0.88,
+      "C": 0.76
+    },
+    "riasec_code": "EC",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1082.00 Project Management Specialists (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "project-management": 3,
+      "stakeholder-management": 3,
+      "communication": 3,
+      "scheduling-coordination": 2,
+      "budgeting": 2,
+      "risk-assessment": 2,
+      "agile-methods": 2,
+      "leadership": 2
+    }
   },
   {
     "slug": "ai-governance-specialist",
@@ -314,12 +857,39 @@
     "sector": "Responsible AI",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [16, 10, 9],
-    "sdg_targets": ["16.6", "10.3"],
+    "sdg_ids": [
+      16,
+      10,
+      9
+    ],
+    "sdg_targets": [
+      "16.6",
+      "10.3"
+    ],
     "sdg_reason": "Makes AI use accountable and transparent (16.6) and guards against discriminatory outcomes (10.3).",
     "source_name": "MOSTI National Guidelines on AI Governance & Ethics (AIGE), 2024; National AI Office launch, Dec 2024",
     "source_url": "https://www.malaysia.gov.my/en/my-initiative/whole-government-digital-services/tadbir-urus/national-guidelines-on-artificial-intelligence-governance-and-ethics-aige",
-    "skills": { "ai-ethics-governance": 3, "data-protection": 3, "risk-assessment": 3, "business-writing": 3, "generative-ai-use": 2, "prompt-writing": 1, "stakeholder-management": 2, "analytical-thinking": 2, "records-management": 1 }
+    "riasec": {
+      "R": 0.25,
+      "I": 0.35,
+      "A": 0,
+      "S": 0.33,
+      "E": 0.51,
+      "C": 0.89
+    },
+    "riasec_code": "CE",
+    "riasec_source": "O*NET 31.0 career interest types: 13-1041.00 Compliance Officers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "ai-ethics-governance": 3,
+      "data-protection": 3,
+      "risk-assessment": 3,
+      "business-writing": 3,
+      "generative-ai-use": 2,
+      "prompt-writing": 1,
+      "stakeholder-management": 2,
+      "analytical-thinking": 2,
+      "records-management": 1
+    }
   },
   {
     "slug": "skills-trainer",
@@ -328,14 +898,35 @@
     "sector": "Education & training",
     "outlook": "emerging",
     "ai_exposure": "medium",
-    "sdg_ids": [4],
-    "sdg_targets": ["4.3", "4.4"],
+    "sdg_ids": [
+      4
+    ],
+    "sdg_targets": [
+      "4.3",
+      "4.4"
+    ],
     "sdg_reason": "Expands technical and vocational learning (4.3) and job-relevant skills (4.4).",
     "source_name": "WEF Future of Jobs Report 2023, Fig. 3.3 (growing: Vocational Education Teachers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2023/",
-    "skills": { "teaching-mentoring": 3, "digital-literacy": 3, "communication": 3, "generative-ai-use": 2, "multilingual-communication": 2, "lifelong-learning": 2 }
+    "riasec": {
+      "R": 0.46,
+      "I": 0.53,
+      "A": 0.36,
+      "S": 0.94,
+      "E": 0.18,
+      "C": 0.38
+    },
+    "riasec_code": "SI",
+    "riasec_source": "O*NET 31.0 career interest types: 25-1194.00 Career/Technical Education Teachers, Postsecondary (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "teaching-mentoring": 3,
+      "digital-literacy": 3,
+      "communication": 3,
+      "generative-ai-use": 2,
+      "multilingual-communication": 2,
+      "lifelong-learning": 2
+    }
   },
-
   {
     "slug": "administrative-assistant",
     "title": "Administrative Assistant / Executive Secretary",
@@ -343,12 +934,35 @@
     "sector": "Business services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5"
+    ],
     "sdg_reason": "A large, declining occupation; reskilling pathways protect full and productive employment (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 and 2.4 (fastest- and largest-declining: Administrative Assistants and Executive Secretaries)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "office-administration": 3, "scheduling-coordination": 3, "records-management": 3, "business-writing": 2, "spreadsheets": 2, "customer-service": 2, "data-entry": 2, "communication": 2 }
+    "riasec": {
+      "R": 0.16,
+      "I": 0.06,
+      "A": 0,
+      "S": 0.44,
+      "E": 0.53,
+      "C": 0.99
+    },
+    "riasec_code": "CES",
+    "riasec_source": "O*NET 31.0 career interest types: 43-6014.00 Secretaries and Administrative Assistants, Except Legal, Medical, and Executive (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "office-administration": 3,
+      "scheduling-coordination": 3,
+      "records-management": 3,
+      "business-writing": 2,
+      "spreadsheets": 2,
+      "customer-service": 2,
+      "data-entry": 2,
+      "communication": 2
+    }
   },
   {
     "slug": "data-entry-clerk",
@@ -357,12 +971,31 @@
     "sector": "Business services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5"
+    ],
     "sdg_reason": "Routine tasks are being automated; transition support protects decent work (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-declining: Data Entry Clerks)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "data-entry": 3, "attention-to-detail": 3, "spreadsheets": 2, "records-management": 2 }
+    "riasec": {
+      "R": 0.34,
+      "I": 0.22,
+      "A": 0,
+      "S": 0.03,
+      "E": 0.11,
+      "C": 1
+    },
+    "riasec_code": "CR",
+    "riasec_source": "O*NET 31.0 career interest types: 43-9021.00 Data Entry Keyers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "data-entry": 3,
+      "attention-to-detail": 3,
+      "spreadsheets": 2,
+      "records-management": 2
+    }
   },
   {
     "slug": "bank-teller",
@@ -371,12 +1004,32 @@
     "sector": "Financial services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5", "8.10"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5",
+      "8.10"
+    ],
     "sdg_reason": "Digital banking is shrinking counter roles; transitions protect decent work (8.5) as access to finance moves online (8.10).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-declining: Bank Tellers and Related Clerks)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "cash-handling": 3, "customer-service": 3, "attention-to-detail": 2, "data-entry": 2 }
+    "riasec": {
+      "R": 0.21,
+      "I": 0.07,
+      "A": 0,
+      "S": 0.24,
+      "E": 0.53,
+      "C": 0.98
+    },
+    "riasec_code": "CE",
+    "riasec_source": "O*NET 31.0 career interest types: 43-3071.00 Tellers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "cash-handling": 3,
+      "customer-service": 3,
+      "attention-to-detail": 2,
+      "data-entry": 2
+    }
   },
   {
     "slug": "cashier-ticket-clerk",
@@ -385,12 +1038,30 @@
     "sector": "Retail & services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5"
+    ],
     "sdg_reason": "Self-checkout and digital payments reduce these jobs; transitions protect decent work (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 and 2.4 (fastest- and largest-declining: Cashiers and Ticket Clerks)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "cash-handling": 3, "customer-service": 3, "communication": 2 }
+    "riasec": {
+      "R": 0.32,
+      "I": 0,
+      "A": 0,
+      "S": 0.26,
+      "E": 0.44,
+      "C": 0.87
+    },
+    "riasec_code": "CE",
+    "riasec_source": "O*NET 31.0 career interest types: 41-2011.00 Cashiers (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "cash-handling": 3,
+      "customer-service": 3,
+      "communication": 2
+    }
   },
   {
     "slug": "accounting-clerk",
@@ -399,12 +1070,32 @@
     "sector": "Business services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5"
+    ],
     "sdg_reason": "Accounting software automates routine bookkeeping; reskilling protects decent work (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.2 (fastest-declining: Accounting, Bookkeeping and Payroll Clerks)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "bookkeeping": 3, "spreadsheets": 3, "attention-to-detail": 3, "data-entry": 2, "records-management": 2 }
+    "riasec": {
+      "R": 0.1,
+      "I": 0.2,
+      "A": 0,
+      "S": 0.08,
+      "E": 0.31,
+      "C": 1
+    },
+    "riasec_code": "CE",
+    "riasec_source": "O*NET 31.0 career interest types: 43-3031.00 Bookkeeping, Accounting, and Auditing Clerks (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "bookkeeping": 3,
+      "spreadsheets": 3,
+      "attention-to-detail": 3,
+      "data-entry": 2,
+      "records-management": 2
+    }
   },
   {
     "slug": "customer-service-worker",
@@ -413,11 +1104,31 @@
     "sector": "Business services",
     "outlook": "declining",
     "ai_exposure": "high",
-    "sdg_ids": [8],
-    "sdg_targets": ["8.5"],
+    "sdg_ids": [
+      8
+    ],
+    "sdg_targets": [
+      "8.5"
+    ],
     "sdg_reason": "Chatbots are absorbing routine enquiries; transition pathways protect decent work (8.5).",
     "source_name": "WEF Future of Jobs Report 2025, Fig. 2.4 (largest-declining: Client Information and Customer Service Workers)",
     "source_url": "https://www.weforum.org/publications/the-future-of-jobs-report-2025/",
-    "skills": { "customer-service": 3, "communication": 3, "multilingual-communication": 2, "data-entry": 1, "empathy-listening": 2 }
+    "riasec": {
+      "R": 0.16,
+      "I": 0.1,
+      "A": 0,
+      "S": 0.46,
+      "E": 0.68,
+      "C": 0.89
+    },
+    "riasec_code": "CES",
+    "riasec_source": "O*NET 31.0 career interest types: 43-4051.00 Customer Service Representatives (closest O*NET occupation; scores rescaled from 1-7 to 0-1)",
+    "skills": {
+      "customer-service": 3,
+      "communication": 3,
+      "multilingual-communication": 2,
+      "data-entry": 1,
+      "empathy-listening": 2
+    }
   }
 ]

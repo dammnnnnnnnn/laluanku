@@ -5,7 +5,7 @@ Curated baseline data loaded by `npm run db:seed`. Every file is validated with 
 | File | Contents |
 |---|---|
 | `skills.json` | 89 skills, each with a category, SDG ids and a one-line SDG reason |
-| `roles.json` | 24 emerging and 6 declining roles, each with a cited source, SDG targets, AI exposure level and required skills (importance 1–3) |
+| `roles.json` | 24 emerging and 6 declining roles, each with a cited source, SDG targets, AI exposure level, O*NET RIASEC profile and required skills (importance 1–3) |
 | `signals.json` | 36 dated trend signals from real reports, research and news |
 | `scenarios.json` | `moderate_2030` and `fast_ai_2030` |
 | `profiles/*.json` | 3 **synthetic** sample profiles (fictional people, no real CVs) |
@@ -43,6 +43,12 @@ These are modelling choices, and the UI should label them as such:
 - **SDG tags and reasons:** our mapping to SDG targets.
 - **Scenario multipliers** (1.0 / 1.5): assumptions, labelled as estimates.
 
+## Role interest profiles (RIASEC)
+
+Each role's `riasec` scores and `riasec_code` come from the O*NET 31.0 `career_interest_types` file: occupational interest scores (1–7) rescaled to 0–1 as (score − 1) / 6, with the code taken from O*NET's first, second and third interest high-points (some occupations have only two). Each role is mapped to its closest O*NET occupation, which `riasec_source` names (for example, AI & Machine Learning Specialist → 15-1221.00 Computer and Information Research Scientists). The mappings are team judgements.
+
+This includes information from the [O*NET 31.0 Database](https://www.onetcenter.org/database.html) by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under the [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license. Changes: rescaled scores and our role-to-occupation mapping. O*NET® is a trademark of USDOL/ETA.
+
 ## Not yet seeded
 
-- `courses` (step 6) and role RIASEC profiles (step 5, from O*NET, after checking its licence and attribution terms). The columns exist and are nullable for now.
+- `courses` (step 6). The table exists and is empty for now.

@@ -24,6 +24,7 @@ const SOURCES_VERIFIED_AT = new Date("2026-10-20T00:00:00+08:00");
 const slug = z.string().regex(/^[a-z0-9-]+$/);
 const sdgIds = z.array(z.number().int().min(1).max(17)).min(1, "every role and skill needs at least one SDG");
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const unit = z.number().min(0).max(1);
 
 const SkillSeed = z.object({
   slug,
@@ -45,6 +46,9 @@ const RoleSeed = z.object({
   sdg_reason: z.string().min(10),
   source_name: z.string().min(1),
   source_url: z.url(),
+  riasec: z.object({ R: unit, I: unit, A: unit, S: unit, E: unit, C: unit }),
+  riasec_code: z.string().regex(/^[RIASEC]{1,3}$/),
+  riasec_source: z.string().min(10),
   skills: z.record(slug, z.number().int().min(1).max(3)),
 });
 
@@ -184,6 +188,9 @@ export async function runSeed(db: AnyDb) {
           sdgReason: r.sdg_reason,
           sourceName: r.source_name,
           sourceUrl: r.source_url,
+          riasec: r.riasec,
+          riasecCode: r.riasec_code,
+          riasecSource: r.riasec_source,
         })),
       )
       .onConflictDoUpdate({
@@ -199,6 +206,9 @@ export async function runSeed(db: AnyDb) {
           sdgReason: excluded("sdg_reason"),
           sourceName: excluded("source_name"),
           sourceUrl: excluded("source_url"),
+          riasec: excluded("riasec"),
+          riasecCode: excluded("riasec_code"),
+          riasecSource: excluded("riasec_source"),
         },
       });
 
