@@ -15,6 +15,13 @@
       "when": 1792427546897,
       "tag": "0001_signal_ingest",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792430161829,
+      "tag": "0002_profile_public_id",
+      "breakpoints": true
     }
   ]
 }

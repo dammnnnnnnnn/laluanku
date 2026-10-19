@@ -183,6 +183,8 @@ export const profiles = pgTable("profiles", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   // Set only for the synthetic sample profiles, so re-seeding updates them in place.
   sampleKey: text("sample_key").unique(),
+  // Unguessable id used in URLs for user-created profiles (no accounts, so the link is the key).
+  publicId: text("public_id").unique(),
   rawInput: text("raw_input").notNull(),
   extractedJson: jsonb("extracted_json").$type<ExtractedProfile>().notNull(),
   riasec: jsonb("riasec").$type<Riasec>(),
