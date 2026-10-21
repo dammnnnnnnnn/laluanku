@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Strings } from "@/lib/i18n";
 import type { RefreshSummary } from "@/lib/signals/refresh";
+import { btnPrimary, inputClass } from "../ui";
 
 type State =
   | { kind: "idle" }
@@ -37,10 +38,10 @@ export function RefreshPanel({ s }: { s: Strings }) {
   }
 
   return (
-    <section className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-      <h2 className="font-semibold">{s.refreshTitle}</h2>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{s.refreshHelp}</p>
-      <form onSubmit={refresh} className="mt-3 flex flex-col gap-2 sm:flex-row">
+    <section className="card flex flex-col gap-3">
+      <h2 className="text-[17px] font-semibold">{s.refreshTitle}</h2>
+      <p className="text-sm text-mu">{s.refreshHelp}</p>
+      <form onSubmit={refresh} className="flex flex-col gap-2 sm:flex-row">
         <label className="sr-only" htmlFor="admin-token">
           {s.refreshToken}
         </label>
@@ -51,21 +52,21 @@ export function RefreshPanel({ s }: { s: Strings }) {
           placeholder={s.refreshToken}
           value={token}
           onChange={(e) => setToken(e.target.value)}
-          className="flex-1 rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-sm dark:border-zinc-700"
+          className={`${inputClass} flex-1`}
         />
         <button
           type="submit"
           disabled={!token || state.kind === "running"}
-          className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className={btnPrimary}
         >
           {s.refreshButton}
         </button>
       </form>
 
-      {state.kind === "running" && <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{s.refreshRunning}</p>}
-      {state.kind === "error" && <p className="mt-3 text-sm text-red-700 dark:text-red-400">{state.message}</p>}
+      {state.kind === "running" && <p className="text-sm text-mu">{s.refreshRunning}</p>}
+      {state.kind === "error" && <p className="rounded-xl bg-dnbg px-3.5 py-2.5 text-sm text-dn">{state.message}</p>}
       {state.kind === "done" && (
-        <div className="mt-3 text-sm">
+        <div className="rounded-xl bg-sf2 px-3.5 py-3 text-sm">
           <p className="font-medium">
             {s.refreshDone} ({state.summary.tagger}
             {state.summary.model ? ` · ${state.summary.model}` : ""}): {state.summary.checked} {s.refreshChecked},{" "}
@@ -75,7 +76,7 @@ export function RefreshPanel({ s }: { s: Strings }) {
           {state.summary.feeds
             .filter((f) => !f.ok)
             .map((f) => (
-              <p key={f.key} className="text-amber-700 dark:text-amber-400">
+              <p key={f.key} className="text-am">
                 {f.name}: {s.refreshFeedFailed} ({f.error})
               </p>
             ))}

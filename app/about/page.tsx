@@ -4,22 +4,36 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { getDb } from "@/lib/db";
 import { courses, roles, signals, skillEmbeddings, skills } from "@/lib/db/schema";
-import { fmt, t } from "@/lib/i18n";
+import { fmt, t, type Strings } from "@/lib/i18n";
 import { getStrings } from "@/lib/locale";
 import { runpodConfig } from "@/lib/runpod";
 import { DEFAULT_MODEL } from "@/lib/signals/tag-claude";
+import { REPO_URL } from "../site-nav";
+import { PageBody, PageHero } from "../ui";
 
 export const metadata = { title: "About · LaluanKu" };
 
-const REPO_URL = "https://github.com/dammnnnnnnnn/laluanku";
-
 export default function AboutPage() {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-10 sm:px-6">
-      <Suspense fallback={<p className="text-sm text-zinc-500">{t("en").resultsLoading}</p>}>
+    <main className="flex flex-1 flex-col">
+      <Suspense fallback={<Hero s={t("en")} />}>
         <AboutContent />
       </Suspense>
     </main>
+  );
+}
+
+function Hero({ s }: { s: Strings }) {
+  return (
+    <PageHero
+      eyebrow={s.aboutEyebrow}
+      title={
+        <>
+          {s.aboutHeroA} <span className="text-pr">{s.aboutHeroB}</span>
+        </>
+      }
+      intro={s.aboutIntro}
+    />
   );
 }
 
@@ -42,10 +56,10 @@ async function loadCounts(model: string | null): Promise<Counts | null> {
   }
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Card({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
   return (
-    <section className="flex flex-col gap-2">
-      <h2 className="text-xl font-semibold">{title}</h2>
+    <section className={`card flex flex-col gap-3 ${className}`}>
+      <h2 className="text-[17px] font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -53,11 +67,21 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function List({ items }: { items: string[] }) {
   return (
-    <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm text-zinc-700 dark:text-zinc-300">
+    <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm leading-normal text-mu marker:text-pr">
       {items.map((x) => (
         <li key={x}>{x}</li>
       ))}
     </ul>
+  );
+}
+
+function ModelRow({ tag, text, on, onLabel, offLabel }: { tag: string; text: string; on: boolean; onLabel: string; offLabel: string }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-2xl bg-sf2 px-4 py-3.5 text-sm leading-normal">
+      <span className="rounded-lg bg-soft px-2.5 py-1 font-mono text-xs font-semibold text-pr">{tag}</span>
+      <span className="min-w-0 flex-[1_1_260px]">{text}</span>
+      <span className={`text-[13px] font-semibold ${on ? "text-up" : "text-am"}`}>● {on ? onLabel : offLabel}</span>
+    </div>
   );
 }
 
@@ -71,73 +95,94 @@ async function AboutContent() {
   const date = counts?.lastFetched
     ? new Intl.DateTimeFormat(locale === "ms" ? "ms-MY" : "en-MY", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kuala_Lumpur" }).format(counts.lastFetched)
     : "–";
+  const principles = [s.aboutP1, s.aboutP2, s.aboutP3, s.aboutP4, s.aboutP5];
 
   return (
-    <div lang={locale} className="flex flex-col gap-8">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">{s.aboutTitle}</h1>
-        <p className="text-zinc-600 dark:text-zinc-400">{s.aboutIntro}</p>
-      </header>
+    <div lang={locale}>
+      <Hero s={s} />
+      <PageBody className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
+        {principles.map((p, i) => (
+          <div key={p} className="card flex flex-col gap-2">
+            <span className="font-mono text-xs font-semibold text-pr">{String(i + 1).padStart(2, "0")}</span>
+            <p className="text-sm leading-normal">{p}</p>
+          </div>
+        ))}
 
-      <Section title={s.aboutPrinciplesTitle}>
-        <List items={[s.aboutP1, s.aboutP2, s.aboutP3, s.aboutP4, s.aboutP5]} />
-      </Section>
+        <Card title={s.aboutModelsTitle} className="col-span-full">
+          <ModelRow tag="LLM" text={fmt(s.aboutModelLlm, { model: llmModel, status: llmOn ? s.aboutModelLlmOn : s.aboutModelLlmOff })} on={llmOn} onLabel={s.aboutModelLlmOn} offLabel={s.aboutFallback} />
+          <ModelRow
+            tag="EMB"
+            text={fmt(s.aboutModelEmb, { model: rp?.model ?? "BAAI/bge-m3", status: rp ? fmt(s.aboutModelEmbOn, { n: counts?.embeddings ?? 0 }) : s.aboutModelEmbOff })}
+            on={Boolean(rp)}
+            onLabel={s.aboutModelLlmOn}
+            offLabel={s.aboutFallback}
+          />
+          <p className="text-[13px] text-mu">{s.aboutModelNone}</p>
+        </Card>
 
-      <Section title={s.aboutModelsTitle}>
-        <List
-          items={[
-            fmt(s.aboutModelLlm, { model: llmModel, status: llmOn ? s.aboutModelLlmOn : s.aboutModelLlmOff }),
-            fmt(s.aboutModelEmb, {
-              model: rp?.model ?? "BAAI/bge-m3",
-              status: rp ? fmt(s.aboutModelEmbOn, { n: counts?.embeddings ?? 0 }) : s.aboutModelEmbOff,
-            }),
-            s.aboutModelNone,
-          ]}
-        />
-      </Section>
-
-      <Section title={s.aboutDataTitle}>
-        <List
-          items={[
-            ...(counts
-              ? [
-                  fmt(s.aboutDataSignals, { n: counts.signals, sources: counts.sources, date }),
-                  fmt(s.aboutDataRoles, { roles: counts.roles, skills: counts.skills }),
-                  fmt(s.aboutDataCourses, { n: counts.courses }),
-                ]
-              : []),
-            s.aboutDataSdg,
-            s.aboutDataSamples,
-          ]}
-        />
-        <p className="text-sm">
-          <Link href="/signals" className="text-emerald-700 underline dark:text-emerald-400">
-            {s.navSignals}
+        <section className="flex flex-col gap-4 rounded-3xl bg-pr p-6 text-pri">
+          <h2 className="text-[17px] font-semibold">{s.aboutDataTitle}</h2>
+          {counts && (
+            <dl className="grid grid-cols-2 gap-3">
+              {(
+                [
+                  [counts.signals, s.liveSignals],
+                  [counts.roles, s.homeStatRoles],
+                  [counts.courses, s.homeStatCourses],
+                  [17, "SDGs"],
+                ] as const
+              ).map(([n, label]) => (
+                <div key={label} className="flex flex-col-reverse">
+                  <dt className="text-[13px] opacity-85">{label}</dt>
+                  <dd className="text-3xl font-extrabold">{n}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          <Link href="/signals" className="text-sm font-semibold underline">
+            {s.navSignals} →
           </Link>
-        </p>
-      </Section>
+        </section>
 
-      <Section title={s.aboutFairnessTitle}>
-        <List items={[s.aboutF1, s.aboutF2, s.aboutF3, s.aboutF4]} />
-      </Section>
+        <Card title={s.aboutDataTitle} className="md:col-span-2">
+          <List
+            items={[
+              ...(counts
+                ? [
+                    fmt(s.aboutDataSignals, { n: counts.signals, sources: counts.sources, date }),
+                    fmt(s.aboutDataRoles, { roles: counts.roles, skills: counts.skills }),
+                    fmt(s.aboutDataCourses, { n: counts.courses }),
+                  ]
+                : []),
+              s.aboutDataSdg,
+              s.aboutDataSamples,
+            ]}
+          />
+        </Card>
 
-      <Section title={s.aboutPrivacyTitle}>
-        <List items={[s.aboutPr1, s.aboutPr2]} />
-      </Section>
+        <Card title={s.aboutFairnessTitle}>
+          <List items={[s.aboutF1, s.aboutF2, s.aboutF3, s.aboutF4]} />
+        </Card>
 
-      <Section title={s.aboutLimitsTitle}>
-        <List items={[s.aboutL1, s.aboutL2, s.aboutL3, s.aboutL4, s.aboutL5]} />
-      </Section>
+        <Card title={s.aboutPrivacyTitle}>
+          <List items={[s.aboutPr1, s.aboutPr2]} />
+        </Card>
 
-      <Section title={s.aboutAttributionTitle}>
-        <p className="text-sm text-zinc-700 dark:text-zinc-300">{s.aboutBuiltBy}</p>
-        <OnetAttribution />
-        <p className="text-sm">
-          <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline dark:text-emerald-400">
-            {s.aboutSource} ↗
-          </a>
-        </p>
-      </Section>
+        <Card title={s.aboutLimitsTitle}>
+          <List items={[s.aboutL1, s.aboutL2, s.aboutL3, s.aboutL4, s.aboutL5]} />
+        </Card>
+
+        <Card title={s.aboutAttributionTitle} className="col-span-full">
+          <p className="text-sm text-mu">{s.aboutBuiltBy}</p>
+          <OnetAttribution />
+          <p className="text-sm text-mu">{s.aboutSdgIcons}</p>
+          <p className="text-sm">
+            <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-pr">
+              {s.aboutSource} ↗
+            </a>
+          </p>
+        </Card>
+      </PageBody>
     </div>
   );
 }
@@ -145,7 +190,7 @@ async function AboutContent() {
 /** Attribution wording required by the O*NET licence (kept in English, as published). */
 function OnetAttribution() {
   return (
-    <p lang="en" className="text-sm text-zinc-700 dark:text-zinc-300">
+    <p lang="en" className="text-sm text-mu">
       This page includes information from the{" "}
       <a href="https://www.onetcenter.org/database.html" target="_blank" rel="noopener noreferrer" className="underline">
         O*NET 31.0 Database
