@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
-import { SiteNav, SiteNavFallback } from "./site-nav";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
+import { SiteFooter, SiteFooterFallback, SiteNav, SiteNavFallback } from "./site-nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,17 +23,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <header className="border-b border-zinc-200 dark:border-zinc-800">
+    // The theme script sets data-theme before React hydrates, so the attribute may differ.
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="flex min-h-full flex-col">
+        <header className="sticky top-0 z-20 border-b border-ln bg-bg/95 backdrop-blur">
           <Suspense fallback={<SiteNavFallback />}>
             <SiteNav />
           </Suspense>
         </header>
-        {children}
+        <div className="flex flex-1 flex-col">{children}</div>
+        <footer className="border-t border-ln">
+          <Suspense fallback={<SiteFooterFallback />}>
+            <SiteFooter />
+          </Suspense>
+        </footer>
       </body>
     </html>
   );

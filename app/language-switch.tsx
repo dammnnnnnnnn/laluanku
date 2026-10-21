@@ -14,11 +14,10 @@ export function LanguageSwitch({ locale }: { locale: Locale }) {
         document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
         router.refresh();
       }}
-      className="rounded border border-zinc-300 px-2 py-0.5 text-xs font-medium dark:border-zinc-700"
+      className="min-h-9 rounded-full border border-ln px-3 py-2 text-[13px] font-semibold text-mu"
       aria-label={next === "ms" ? "Tukar ke Bahasa Melayu" : "Switch to English"}
-      lang={next}
     >
-      {next === "ms" ? "BM" : "EN"}
+      <span className={locale === "en" ? "text-ink" : ""}>EN</span> | <span className={locale === "ms" ? "text-ink" : ""}>BM</span>
     </button>
   );
 }

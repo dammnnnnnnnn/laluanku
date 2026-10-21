@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
+/* Design tokens (from the team's UI mockups). Light is the default; dark follows the system
+   setting unless the person picks a theme, which sets data-theme on <html>. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #fbfaff;
+  --sf: #ffffff;
+  --sf2: #f5f2fc;
+  --ink: #18151f;
+  --mu: #5d5870;
+  --ln: #e7e2f1;
+  --pr: #5b2bd6;
+  --pri: #ffffff;
+  --soft: #ece5fd;
+  --hero: linear-gradient(180deg, #efe7ff 0%, #f7f3ff 55%, #fbfaff 100%);
+  --up: #0f7a5c;
+  --upbg: #dcf5ec;
+  --dn: #b4234a;
+  --dnbg: #fde4ea;
+  --am: #8a5a00;
+  --ambg: #fff4d6;
+  --info: #1d5fa8;
+  --infobg: #e1eefc;
+  --sh: 0 10px 30px -12px rgba(60, 30, 140, 0.18);
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --bg: #0f0d16;
+    --sf: #17141f;
+    --sf2: #1e1a2a;
+    --ink: #f2effa;
+    --mu: #a49eb8;
+    --ln: #2d283b;
+    --pr: #a68bff;
+    --pri: #140d2b;
+    --soft: #251d3d;
+    --hero: linear-gradient(180deg, #221a3d 0%, #16121f 60%, #0f0d16 100%);
+    --up: #4fd1a5;
+    --upbg: #0f3328;
+    --dn: #ff7d9c;
+    --dnbg: #3a1622;
+    --am: #f5c35b;
+    --ambg: #352712;
+    --info: #7cb8ff;
+    --infobg: #132a45;
+    --sh: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --bg: #0f0d16;
+  --sf: #17141f;
+  --sf2: #1e1a2a;
+  --ink: #f2effa;
+  --mu: #a49eb8;
+  --ln: #2d283b;
+  --pr: #a68bff;
+  --pri: #140d2b;
+  --soft: #251d3d;
+  --hero: linear-gradient(180deg, #221a3d 0%, #16121f 60%, #0f0d16 100%);
+  --up: #4fd1a5;
+  --upbg: #0f3328;
+  --dn: #ff7d9c;
+  --dnbg: #3a1622;
+  --am: #f5c35b;
+  --ambg: #352712;
+  --info: #7cb8ff;
+  --infobg: #132a45;
+  --sh: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-sf: var(--sf);
+  --color-sf2: var(--sf2);
+  --color-ink: var(--ink);
+  --color-mu: var(--mu);
+  --color-ln: var(--ln);
+  --color-pr: var(--pr);
+  --color-pri: var(--pri);
+  --color-soft: var(--soft);
+  --color-up: var(--up);
+  --color-upbg: var(--upbg);
+  --color-dn: var(--dn);
+  --color-dnbg: var(--dnbg);
+  --color-am: var(--am);
+  --color-ambg: var(--ambg);
+  --color-info: var(--info);
+  --color-infobg: var(--infobg);
+  --shadow-card: var(--sh);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Page band with the soft hero gradient. */
+@utility bg-hero {
+  background: var(--hero);
+}
+
+/* Centred content column: 1200px wide with a 20–48px side gutter. */
+@utility wrap {
+  width: 100%;
+  max-width: calc(1200px + 2 * clamp(20px, 4vw, 48px));
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 48px);
+}
+
+/* Small uppercase mono label above headings ("FUTURE SKILLS RADAR"). */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pr);
+}
+
+@utility card {
+  background: var(--sf);
+  border: 1px solid var(--ln);
+  border-radius: 24px;
+  padding: 24px;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s;
+}
+
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--pr);
 }

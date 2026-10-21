@@ -9,24 +9,31 @@ function textColor(hex: string): string {
 }
 
 /**
- * An SDG badge in the goal's official colour. The goal name shows from the sm breakpoint up;
- * on phones only the number shows (the name stays available to screen readers and as a tooltip).
+ * An SDG badge in the goal's official colour: "SDG 8", plus the goal name when `named`.
+ * The name always stays available to screen readers and as a tooltip.
  */
-export function SdgChip({ goal, title, compact = false, locale = "en" }: { goal: number; title?: string; compact?: boolean; locale?: Locale }) {
+export function SdgChip({ goal, title, named = false, locale = "en" }: { goal: number; title?: string; named?: boolean; locale?: Locale }) {
   const g = SDG_GOALS[goal];
   if (!g) return null;
   const name = locale === "ms" ? g.ms : g.en;
   return (
     <span
       title={title ?? `SDG ${g.id}: ${name}`}
-      className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium"
+      className="inline-flex items-center gap-1 rounded-lg px-2 py-[3px] text-[11px] font-semibold"
       style={{ backgroundColor: g.color, color: textColor(g.color) }}
     >
-      <span className="font-bold">
-        <span className="sr-only">SDG </span>
-        {g.id}
-      </span>
-      {!compact && <span className="sr-only sm:not-sr-only">{name}</span>}
+      SDG {g.id}
+      {named ? <span>· {name}</span> : <span className="sr-only">: {name}</span>}
+    </span>
+  );
+}
+
+/** An SDG target number ("4.4") in its goal's colour. */
+export function SdgTarget({ goal, target, title }: { goal: number; target: string; title?: string }) {
+  const color = SDG_GOALS[goal]?.color ?? "#666666";
+  return (
+    <span title={title} className="h-fit flex-none rounded-lg px-2 py-[3px] text-xs font-bold" style={{ backgroundColor: color, color: textColor(color) }}>
+      {target}
     </span>
   );
 }
