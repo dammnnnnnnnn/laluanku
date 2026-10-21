@@ -20,7 +20,8 @@
     "start:replit": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "db:deploy": "node scripts/migrate.mjs && tsx scripts/seed.ts",
     "embeddings:check": "tsx scripts/embeddings-check.ts",
-    "embeddings:mock": "tsx scripts/mock-embeddings.ts"
+    "embeddings:mock": "tsx scripts/mock-embeddings.ts",
+    "signals:retag": "tsx scripts/retag-keyword-signals.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

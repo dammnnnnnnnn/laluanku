@@ -55,10 +55,30 @@ const SKILL_KEYWORDS: Record<string, string[]> = {
 };
 
 const WORK_WORDS = /\b(jobs?|workers?|workforce|talent|skills?|reskill\w*|upskill\w*|employ\w*|careers?|hiring|recruit\w*|shortage|training|courses?|occupations?|tasks?|pekerja|kemahiran|tvet)\b/i;
-const DECLINE_WORDS = /\b(replace[sd]?|automation risks?|at risk|lose|losing|lost|cuts?|layoffs?|retrench\w*|redundan\w*|displace\w*|obsolete|decline\w*)\b/i;
+const DECLINE_WORDS =
+  /\b(replace[sd]?|automation risks?|at risk|lose|losing|lost|cuts?|layoffs?|laid off|retrench\w*|redundan\w*|displace\w*|obsolete|decline\w*|shed\w*|slash\w*|job losses|downsiz\w*|closures?)\b/i;
+// News digests ("Top News Today: chip stocks, bitcoin, AI jobs…") mention many topics in passing.
+const DIGEST = /\b(top news|news roundup|morning brief\w*|daily brief\w*|week in review)\b/i;
+const MALAYSIA = /\b(malaysia\w*|m'sia|sabah|sarawak|selangor|johor|penang|melaka|kuala lumpur|putrajaya|mohr|mosti|hrd corp|talentcorp|perkeso|socso)\b/i;
+// Items about another country only (no Malaysian angle) say little about demand here.
+const OTHER_COUNTRY = /\b(philippines?|filipino|china|chinese|indonesia\w*|singapore\w*|thailand|thai|vietnam\w*|india|indian|america\w*|britain|british|australia\w*|japan\w*|korea\w*)\b/i;
+const OTHER_COUNTRY_ABBR = /\b(PH|US|UK)\b|\bU\.S\./; // case-sensitive, so "us" and "uk" as words don't count
+
+// When AI or automation is the cause of a decline, it is not itself declining: never mark these
+// skills or roles as falling because a headline says "jobs at risk from automation".
+export const CAUSE_SKILLS = new Set(["generative-ai-use", "process-automation", "machine-learning", "ai-ethics-governance"]);
+export const CAUSE_ROLES = new Set(["process-automation-specialist", "ai-ml-specialist", "ai-governance-specialist"]);
 
 function matches(textLower: string, words: string[]): boolean {
   return words.some((w) => textLower.includes(w));
+}
+
+/** Why a headline should be skipped before tagging, or null if it is usable. */
+export function skipReason(title: string, snippet = ""): string | null {
+  if (DIGEST.test(title) || (title.split(":")[1] ?? "").split(/,\s/).length >= 4) return "news digest covering many topics";
+  const raw = `${title} ${snippet}`;
+  if ((OTHER_COUNTRY.test(raw) || OTHER_COUNTRY_ABBR.test(raw)) && !MALAYSIA.test(raw)) return "about another country, with no Malaysian angle";
+  return null;
 }
 
 export class KeywordTagger implements Tagger {
@@ -69,15 +89,18 @@ export class KeywordTagger implements Tagger {
     return items.map((item) => {
       const raw = `${item.title} ${item.snippet}`;
       const t = ` ${raw.toLowerCase()} `;
-      const roleIds = catalog.roles.filter((r) => matches(t, ROLE_KEYWORDS[r.slug] ?? [])).map((r) => r.id);
-      const skillIds = catalog.skills.filter((s) => matches(t, SKILL_KEYWORDS[s.slug] ?? [])).map((s) => s.id);
-      const relevant = WORK_WORDS.test(raw) && roleIds.length + skillIds.length > 0;
+      const direction = DECLINE_WORDS.test(raw) ? "declining" : "emerging";
+      const isCause = (set: Set<string>, slug: string) => direction === "declining" && set.has(slug);
+      const roleIds = catalog.roles.filter((r) => !isCause(CAUSE_ROLES, r.slug) && matches(t, ROLE_KEYWORDS[r.slug] ?? [])).map((r) => r.id);
+      const skillIds = catalog.skills.filter((s) => !isCause(CAUSE_SKILLS, s.slug) && matches(t, SKILL_KEYWORDS[s.slug] ?? [])).map((s) => s.id);
+      const skip = skipReason(item.title, item.snippet);
+      const relevant = !skip && WORK_WORDS.test(raw) && roleIds.length + skillIds.length > 0;
       return {
         ok: true,
         proposal: {
           relevant,
-          reason: relevant ? "keyword match on jobs/skills terms" : "no jobs/skills keyword match",
-          direction: DECLINE_WORDS.test(raw) ? "declining" : "emerging",
+          reason: skip ?? (relevant ? "keyword match on jobs/skills terms" : "no jobs/skills keyword match"),
+          direction,
           strength: 1,
           summary: item.title,
           roleIds,
